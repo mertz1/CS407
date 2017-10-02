@@ -15,22 +15,22 @@ namespace CivilMapSQLDatabase
             CrimeAndArrestDataRetrieve crimeAndArrestDataRetrieve = new CrimeAndArrestDataRetrieve();
             AddressPurification addressPurification = new AddressPurification();
 
-            var list = crimeAndArrestDataRetrieve.GetCivilMapArrest();
-            var model = new List<CivilMapCrimeArrestModel>();
-            foreach (var item in list)
-            {
-                model.Add(new CivilMapCrimeArrestModel
-                {
-                    Id = item.Arrest_Id,
-                    Date = item.Arrest_Date,
-                    Longitude = null,
-                    Latitude = null,
-                    Beat = item.Cpd_Beat,
-                    PurifiedAddressId = null
-                });
-            }
-            crimeAndArrestDataRetrieve.AddCivilMapPurifiedArrest(model);
-            System.Diagnostics.Debug.WriteLine("Finished Insertion");
+            //var list = crimeAndArrestDataRetrieve.GetCivilMapArrest();
+            //var model = new List<CivilMapCrimeArrestModel>();
+            //foreach (var item in list)
+            //{
+            //    model.Add(new CivilMapCrimeArrestModel
+            //    {
+            //        Id = item.Arrest_Id,
+            //        Date = item.Arrest_Date,
+            //        Longitude = null,
+            //        Latitude = null,
+            //        Beat = item.Cpd_Beat,
+            //        PurifiedAddressId = null
+            //    });
+            //}
+            //crimeAndArrestDataRetrieve.AddCivilMapPurifiedArrest(model);
+            //System.Diagnostics.Debug.WriteLine("Finished Insertion");
 
             //List<double> longitude = new List<double>();
             //longitude.Add(-87.622083);
@@ -156,8 +156,8 @@ namespace CivilMapSQLDatabase
             public Decimal NonPurifiedAddressId;    // PK
             public string StreetNumber;
             public string Street;
-            public string Zipcode;
             public string City;
+            public string Zipcode;
             public Guid PurifiedAddressId;   // FK
         };
 

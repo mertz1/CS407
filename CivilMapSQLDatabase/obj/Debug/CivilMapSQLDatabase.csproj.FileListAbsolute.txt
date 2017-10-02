@@ -5,3 +5,9 @@ C:\Users\zhan1803\source\repos\CivilMapSQLDatabase\CivilMapSQLDatabase\obj\Debug
 C:\Users\zhan1803\source\repos\CivilMapSQLDatabase\CivilMapSQLDatabase\obj\Debug\CivilMapSQLDatabase.exe
 C:\Users\zhan1803\source\repos\CivilMapSQLDatabase\CivilMapSQLDatabase\obj\Debug\CivilMapSQLDatabase.pdb
 C:\Users\zhan1803\source\repos\CivilMapSQLDatabase\CivilMapSQLDatabase\obj\Debug\CivilMapSQLDatabase.csprojResolveAssemblyReference.cache
+C:\Users\zhan1803\source\repos\CivilMapSQLDatabase\CS407\CivilMapSQLDatabase\bin\Debug\CivilMapSQLDatabase.exe.config
+C:\Users\zhan1803\source\repos\CivilMapSQLDatabase\CS407\CivilMapSQLDatabase\bin\Debug\CivilMapSQLDatabase.exe
+C:\Users\zhan1803\source\repos\CivilMapSQLDatabase\CS407\CivilMapSQLDatabase\bin\Debug\CivilMapSQLDatabase.pdb
+C:\Users\zhan1803\source\repos\CivilMapSQLDatabase\CS407\CivilMapSQLDatabase\obj\Debug\CivilMapSQLDatabase.csproj.CoreCompileInputs.cache
+C:\Users\zhan1803\source\repos\CivilMapSQLDatabase\CS407\CivilMapSQLDatabase\obj\Debug\CivilMapSQLDatabase.exe
+C:\Users\zhan1803\source\repos\CivilMapSQLDatabase\CS407\CivilMapSQLDatabase\obj\Debug\CivilMapSQLDatabase.pdb
