@@ -15,74 +15,45 @@ namespace CivilMapSQLDatabase
             CrimeAndArrestDataRetrieve crimeAndArrestDataRetrieve = new CrimeAndArrestDataRetrieve();
             AddressPurification addressPurification = new AddressPurification();
 
-            //var list = crimeAndArrestDataRetrieve.GetCivilMapArrest();
-            //var model = new List<CivilMapCrimeArrestModel>();
-            //foreach (var item in list)
+            //var models = PurifiedModelPrepare();
+            //foreach(var item in models)
             //{
-            //    model.Add(new CivilMapCrimeArrestModel
+            //    var list = addressPurification.SelectCivilMapPurifiedAddress(item);
+            //    if(list.Count == 0 || list == null)
             //    {
-            //        Id = item.Arrest_Id,
-            //        Date = item.Arrest_Date,
-            //        Longitude = null,
-            //        Latitude = null,
-            //        Beat = item.Cpd_Beat,
-            //        PurifiedAddressId = null
-            //    });
-            //}
-            //crimeAndArrestDataRetrieve.AddCivilMapPurifiedArrest(model);
-            //System.Diagnostics.Debug.WriteLine("Finished Insertion");
-
-            //List<double> longitude = new List<double>();
-            //longitude.Add(-87.622083);
-            //longitude.Add(-87.610530);
-            //longitude.Add(-87.623189);
-            //longitude.Add(-87.614035);
-            //longitude.Add(-87.616823);
-
-            //List<double> latitude = new List<double>();
-            //latitude.Add(41.754730);
-            //latitude.Add(41.766657);
-            //latitude.Add(41.755658);
-            //latitude.Add(41.766254);
-            //latitude.Add(41.773602);
-
-            //for (int i = 0; i < 20; i++)
-            //{
-            //    DateTime date;
-            //    string lo, la;
-            //    string id = ("002" + i).ToString();
-            //    string beat = ("36" + 2 * i).ToString();
-            //    if(i < 5)
-            //    {
-            //        date = new DateTime(2014, 01, 01);
-            //        lo = (longitude.ElementAt(i % 5) + i / 550.5).ToString();
-            //        la = (latitude.ElementAt(i % 5) + i / 230.5).ToString();
+            //        string str = addressPurification.AddCivilMapPurifiedAddress(item);
+            //        Console.WriteLine(str);
             //    }
-            //    else if (i < 10)
-            //    {
-            //        date = new DateTime(2014, 01, 02);
-            //        lo = (longitude.ElementAt(i % 5) - i / 550.5).ToString();
-            //        la = (latitude.ElementAt(i % 5) - i / 230.5).ToString();
-            //    }
-
-            //    else if (i < 15)
-            //    {
-            //        date = new DateTime(2014, 01, 03);
-            //        lo = (longitude.ElementAt(i % 5) + i / 550.5).ToString();
-            //        la = (latitude.ElementAt(i % 5) + i / 230.5).ToString();
-            //    }  
             //    else
             //    {
-            //        date = new DateTime(2014, 01, 04);
-            //        lo = (longitude.ElementAt(i % 5) - i / 550.5).ToString();
-            //        la = (latitude.ElementAt(i % 5) - i / 230.5).ToString();
-            //    } 
-            //    //crimeAndArrestDataRetrieve.AddTestCrime(id, date, lo, la, beat);
-            //    crimeAndArrestDataRetrieve.AddTestArrest(id, date, lo, la, beat);
+            //        Console.WriteLine("Existed: ");
+            //        foreach(var ll in list)
+            //        {
+            //            Console.WriteLine("     " + ll.PurifiedAddressId);
+            //        }
+            //    }
             //}
 
 
 
+            //var models = NonPurifiedAddressModelPrepare();
+            //foreach (var item in models)
+            //{
+            //    var list = addressPurification.SelectCivilMapNonPurifiedAddress(item);
+            //    if (list.Count == 0 || list == null)
+            //    {
+            //        addressPurification.AddCivilMapNonPurifiedAddress(item);
+            //        Console.WriteLine(item.NonPurifiedAddressId);
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("Existed: ");
+            //        foreach (var ll in list)
+            //        {
+            //            Console.WriteLine("     " + ll.NonPurifiedAddressId);
+            //        }
+            //    }
+            //}
 
 
             //crimeAndArrestDataRetrieve.GetCivilMapCrime();
@@ -120,6 +91,62 @@ namespace CivilMapSQLDatabase
                 {
                     PointId = 56892 + i,
                     PurifiedAddressId = Guid.Parse("f8592e81-2dff-48c0-b005-0068df163e0e")
+                });
+            }
+            return list;
+        }
+
+        private static List<PurifiedAddressModel> PurifiedModelPrepare()
+        {
+            List<PurifiedAddressModel> list = new List<PurifiedAddressModel>();
+            List<string> street = new List<string>
+            {
+                "Martin Jishcke",
+                "Traft Rd",
+                "Tippenacnoe Mall",
+                "Russel St",
+                "HICKS underground"
+            };
+            List<string> zipcode = new List<string> { "60606", "60302", "60537", "68970", "60412", "66205", "63284" };
+
+            for (int i = 0; i < 20; i++)
+            {
+                list.Add(new PurifiedAddressModel
+                {
+                    StreetNumber = (i * 10 + i / 2.0).ToString(),
+                    Street = street.ElementAt(i % 5),
+                    City = "Chicago",
+                    Zipcode = zipcode.ElementAt(i % 7),
+                    Longitude = Convert.ToDecimal(41.06 + i/156.89),
+                    Latitude = Convert.ToDecimal(-87.81568 + i / 145.0)
+                });
+            }
+            return list;
+        }
+
+        private static List<NonPurifiedAddressModel> NonPurifiedAddressModelPrepare()
+        {
+            List<NonPurifiedAddressModel> list = new List<NonPurifiedAddressModel>();
+            List<string> street = new List<string>
+            {
+                "Lawson Computer Science",
+                "Purdue Memorial Union",
+                "Stewart Center",
+                "Beering Hall",
+                "Earhart Dining Court"
+            };
+            List<string> zipcode = new List<string> { "60606", "60302", "60537", "68970", "60412", "66205", "63284" };
+
+            for (int i = 0; i < 20; i++)
+            {
+                list.Add(new NonPurifiedAddressModel
+                {
+                    NonPurifiedAddressId = Convert.ToDecimal(i * 10),
+                    StreetNumber = (i * 10 + i / 2.0).ToString(),
+                    Street = street.ElementAt(i % 5),
+                    City = "Chicago",
+                    Zipcode = zipcode.ElementAt(i % 7),
+                    PurifiedAddressId = Guid.Parse("3bec84e5-9683-4d27-94e3-102998572a7d")
                 });
             }
             return list;
