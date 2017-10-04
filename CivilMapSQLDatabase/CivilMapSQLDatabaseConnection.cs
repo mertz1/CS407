@@ -15,6 +15,15 @@ namespace CivilMapSQLDatabase
             CrimeAndArrestDataRetrieve crimeAndArrestDataRetrieve = new CrimeAndArrestDataRetrieve();
             AddressPurification addressPurification = new AddressPurification();
 
+
+            var address = new PurifiedAddressModel();
+            address.Street = "Waldron";
+            address.StreetNumber = "417";
+            address.Zipcode = "47906";
+
+            addressPurification.ValidateAddress(address);
+
+
             //var models = PurifiedModelPrepare();
             //foreach(var item in models)
             //{
