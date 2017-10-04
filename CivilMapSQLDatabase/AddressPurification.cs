@@ -178,7 +178,7 @@ namespace CivilMapSQLDatabase
 ;            }
         }
 
-        public int? AddValidationCivilMapNonPurifiedAddress(NonPurifiedAddressModel item)
+        public object AddValidationCivilMapNonPurifiedAddress(NonPurifiedAddressModel item)
         {
             string connectionString = "Data Source=tcp:civilmapdb.database.windows.net,1433;Initial Catalog=civilmapdb-dev;Persist Security Info=False;User ID=civilmapuser;Password=M#apitright95;Connect Timeout=30;Encrypt=True";
             string commandText = "if not exists (select * from INFORMATION_SCHEMA.TABLES where Table_Name='CivilMapNonPurifiedAddress')" +
@@ -200,7 +200,7 @@ namespace CivilMapSQLDatabase
                     connection.Open();
                     command.ExecuteNonQuery();
 
-                    int insertedId;
+                    object insertedId;
 
                     if (item.City == null)
                     {
@@ -211,9 +211,6 @@ namespace CivilMapSQLDatabase
                         item.Zipcode = "";
                     }
 
-                    Random rnd = new Random();
-                    item.NonPurifiedAddressId = rnd.Next(1000);
-
                     commandText = 
                                   "Insert into CivilMapNonPurifiedAddress (StreetNumber, Street, City, Zipcode) output INSERTED.NonPurifiedAddressId values " +
                                   "(@StreetNumber, @Street, @City, @Zipcode)";
@@ -223,7 +220,7 @@ namespace CivilMapSQLDatabase
                     command.Parameters.AddWithValue("@Street", item.Street);
                     command.Parameters.AddWithValue("@City", item.City);
                     command.Parameters.AddWithValue("@Zipcode", item.Zipcode);
-                    insertedId = (int)command.ExecuteScalar();
+                    insertedId = command.ExecuteScalar();
                     connection.Close();
                     return insertedId;
                 }
@@ -368,7 +365,7 @@ namespace CivilMapSQLDatabase
 
                 if(nonPurifiedResult.Count == 0)
                 {
-                    int? nonPurifiedResponse;
+                    object nonPurifiedResponse;
                     nonPurifiedResponse = AddValidationCivilMapNonPurifiedAddress(nonPurifiedModel);
                     Debug.WriteLine("Added Address with ID: " + nonPurifiedResponse);
 
