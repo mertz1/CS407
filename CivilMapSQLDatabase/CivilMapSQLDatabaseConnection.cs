@@ -51,8 +51,8 @@ namespace CivilMapSQLDatabase
             //    var list = addressPurification.SelectCivilMapNonPurifiedAddress(item);
             //    if (list.Count == 0 || list == null)
             //    {
-            //        addressPurification.AddCivilMapNonPurifiedAddress(item);
-            //        Console.WriteLine(item.NonPurifiedAddressId);
+            //        string str = addressPurification.AddCivilMapNonPurifiedAddress(item);
+            //        Console.WriteLine(str);
             //    }
             //    else
             //    {
@@ -148,15 +148,16 @@ namespace CivilMapSQLDatabase
 
             for (int i = 0; i < 20; i++)
             {
-                list.Add(new NonPurifiedAddressModel
+                NonPurifiedAddressModel model = new NonPurifiedAddressModel
                 {
-                    NonPurifiedAddressId = Convert.ToDecimal(i * 10),
                     StreetNumber = (i * 10 + i / 2.0).ToString(),
                     Street = street.ElementAt(i % 5),
                     City = "Chicago",
-                    Zipcode = zipcode.ElementAt(i % 7),
-                    PurifiedAddressId = Guid.Parse("3bec84e5-9683-4d27-94e3-102998572a7d")
-                });
+                    Zipcode = zipcode.ElementAt(i % 7)
+                };
+                if (i % 5 == 0)
+                    model.PurifiedAddressId = Guid.Parse("3bec84e5-9683-4d27-94e3-102998572a7d");
+                list.Add(model);
             }
             return list;
         }
@@ -189,12 +190,12 @@ namespace CivilMapSQLDatabase
 
         public struct NonPurifiedAddressModel
         {
-            public Decimal NonPurifiedAddressId;    // PK
+            public Guid NonPurifiedAddressId;    // PK
             public string StreetNumber;
             public string Street;
             public string City;
             public string Zipcode;
-            public Guid PurifiedAddressId;   // FK
+            public Guid? PurifiedAddressId;   // FK
         };
 
         public struct CivilMapCrimeArrestModel

@@ -23,7 +23,6 @@ namespace CivilMapSQLDatabase
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                Guid purifiedAddressId = Guid.NewGuid();
                 try
                 {
                     SqlCommand command = new SqlCommand(commandText, connection);
@@ -34,6 +33,7 @@ namespace CivilMapSQLDatabase
                                   "(@PurifiedAddressId, @StreetNumber, @Street, @City, @Zipcode, @Longitude, @Latitude)";
                     command = new SqlCommand(commandText, connection);
 
+                    Guid purifiedAddressId = Guid.NewGuid();
                     command.Parameters.AddWithValue("@PurifiedAddressId", purifiedAddressId);
                     command.Parameters.AddWithValue("@StreetNumber", model.StreetNumber);
                     command.Parameters.AddWithValue("@Street", model.Street);
@@ -133,18 +133,17 @@ namespace CivilMapSQLDatabase
             }
         }
 
-        public void AddCivilMapNonPurifiedAddress(NonPurifiedAddressModel item)
+        public string AddCivilMapNonPurifiedAddress(NonPurifiedAddressModel item)
         {
             string connectionString = "Data Source=tcp:civilmapdb.database.windows.net,1433;Initial Catalog=civilmapdb-dev;Persist Security Info=False;User ID=civilmapuser;Password=M#apitright95;Connect Timeout=30;Encrypt=True";
             string commandText = "if not exists (select * from INFORMATION_SCHEMA.TABLES where Table_Name='CivilMapNonPurifiedAddress')" +
-                                 "CREATE TABLE[dbo].[CivilMapNonPurifiedAddress](" + 
-                                 "[NonPurifiedAddressId] NUMERIC(18) NOT NULL," +
+                                 "CREATE TABLE[dbo].[CivilMapNonPurifiedAddress](" +
+                                 "[NonPurifiedAddressId] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY," +
                                  "[StreetNumber] NVARCHAR(384) NULL," +
                                  "[Street] NVARCHAR(384) NULL," +
                                  "[City] NVARCHAR(384) NULL," +
                                  "[Zipcode] NVARCHAR(384) NULL," +
-                                 "[PurifiedAddressId] UNIQUEIDENTIFIER NOT NULL," + 
-                                 "PRIMARY KEY CLUSTERED([NonPurifiedAddressId] ASC)," + 
+                                 "[PurifiedAddressId] UNIQUEIDENTIFIER NULL," + 
                                  "CONSTRAINT[FK_CivilMapNonPurifiedAddress_CivilMapPurifiedAddress] FOREIGN KEY([PurifiedAddressId]) REFERENCES[dbo].[CivilMapPurifiedAddress] ([PurifiedAddressId]))";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -159,20 +158,24 @@ namespace CivilMapSQLDatabase
                                   "(@NonPurifiedAddressId, @StreetNumber, @Street, @City, @Zipcode, @PurifiedAddressId)";
                     command = new SqlCommand(commandText, connection);
 
-                    command.Parameters.AddWithValue("@NonPurifiedAddressId", item.NonPurifiedAddressId);
+                    Guid nonPurifiedAddressId = Guid.NewGuid();
+                    command.Parameters.AddWithValue("@NonPurifiedAddressId", nonPurifiedAddressId);
                     command.Parameters.AddWithValue("@StreetNumber", item.StreetNumber);
                     command.Parameters.AddWithValue("@Street", item.Street);
                     command.Parameters.AddWithValue("@City", item.City);
                     command.Parameters.AddWithValue("@Zipcode", item.Zipcode);
-                    command.Parameters.AddWithValue("@PurifiedAddressId", item.PurifiedAddressId);
+                    command.Parameters.AddWithValue("@PurifiedAddressId", item.PurifiedAddressId?? (object)DBNull.Value);
                     command.ExecuteNonQuery();
                     connection.Close();
+
+                    return nonPurifiedAddressId.ToString();
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine("Error: " + ex.Message);
                 }
-            }
+                return null;
+;            }
         }
 
         public int? AddValidationCivilMapNonPurifiedAddress(NonPurifiedAddressModel item)
@@ -250,12 +253,12 @@ namespace CivilMapSQLDatabase
                     {
                         list.Add(new NonPurifiedAddressModel
                         {
-                            NonPurifiedAddressId = reader.GetDecimal(0),
+                            NonPurifiedAddressId = reader.GetGuid(0),
                             StreetNumber = reader.IsDBNull(1)? null:reader.GetString(1),
                             Street = reader.IsDBNull(2) ? null : reader.GetString(2),
                             City = reader.IsDBNull(3) ? null : reader.GetString(3),
                             Zipcode = reader.IsDBNull(4) ? null : reader.GetString(4),
-                            PurifiedAddressId = reader.GetGuid(5)
+                            PurifiedAddressId = reader.IsDBNull(5) ? (Guid?)null: reader.GetGuid(5)
                         });
                     }
                     connection.Close();
@@ -291,12 +294,12 @@ namespace CivilMapSQLDatabase
                     {
                         list.Add(new NonPurifiedAddressModel
                         {
-                            NonPurifiedAddressId = reader.GetDecimal(0),
+                            NonPurifiedAddressId = reader.GetGuid(0),
                             StreetNumber = reader.IsDBNull(1)? null:reader.GetString(1),
                             Street = reader.IsDBNull(2) ? null : reader.GetString(2),
                             City = reader.IsDBNull(3) ? null : reader.GetString(3),
                             Zipcode = reader.IsDBNull(4) ? null : reader.GetString(4),
-                            PurifiedAddressId = reader.GetGuid(5)
+                            PurifiedAddressId = reader.IsDBNull(5) ? (Guid?)null : reader.GetGuid(5)
                         });
                     }
                     connection.Close();
@@ -481,7 +484,7 @@ namespace CivilMapSQLDatabase
         public void DeleteTable()
         {
             string connectionString = "Data Source=tcp:civilmapdb.database.windows.net,1433;Initial Catalog=civilmapdb-dev;Persist Security Info=False;User ID=civilmapuser;Password=M#apitright95;Connect Timeout=30;Encrypt=True";
-            string commandText = "drop table [dbo].[CivilMapPurifiedCrime]";
+            string commandText = "drop table [dbo].[CivilMapNonPurifiedAddress]";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
