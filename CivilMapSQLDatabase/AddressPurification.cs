@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace CivilMapSQLDatabase
 {
@@ -342,7 +345,7 @@ namespace CivilMapSQLDatabase
             }
         }
 
-        public Guid? ValidateAddress(PurifiedAddressModel model)
+        public async Task<Guid?> ValidateAddress(PurifiedAddressModel model)
         {
             var purifiedResults = new List<PurifiedAddressModel>();
             purifiedResults = SelectCivilMapPurifiedAddress(model);
@@ -361,14 +364,62 @@ namespace CivilMapSQLDatabase
                 var nonPurifiedResult = new List<NonPurifiedAddressModel>();
                 nonPurifiedResult = SelectCivilMapNonPurifiedAddress(nonPurifiedModel);
 
-                Debug.WriteLine("NonPurified List: " + nonPurifiedResult.Count);
+                Debug.WriteLine("NonPurified List: " + nonPurifiedResult);
+                
+                Debug.WriteLine("Street:" + nonPurifiedModel.Street.ToString().Replace(" ", "+"));
 
-                if(nonPurifiedResult.Count == 0)
+                if (nonPurifiedResult.Count == 0 )
                 {
                     object nonPurifiedResponse;
                     nonPurifiedResponse = AddValidationCivilMapNonPurifiedAddress(nonPurifiedModel);
                     Debug.WriteLine("Added Address with ID: " + nonPurifiedResponse);
 
+                    //call geocod.io
+                    //string apiCall = "street=" + nonPurifiedModel.StreetNumber.ToString();
+                    //apiCall += "+" + nonPurifiedModel.Street.ToString().Replace(" ", "+") + "&";
+
+                    //if(nonPurifiedModel.City != null)
+                    //{
+                    //    apiCall += "city=" + nonPurifiedModel.City.ToString() + "&";
+                    //}
+                    //if(nonPurifiedModel.Zipcode != null)
+                    //{
+                    //    apiCall += "zip=" + nonPurifiedModel.Zipcode.ToString() + "&";
+                    //}
+                    //apiCall += "state=IL&";
+
+                    //apiCall += "api_key=3551a95da75a999c89a259153a77d2aa9a3d5a2";
+
+                    //using (var client = new HttpClient())
+                    //{
+                    //    client.BaseAddress = new Uri("https://api.geocod.io/v1/geocode?");
+                    //    client.DefaultRequestHeaders.Accept.Clear();
+                    //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    //    HttpResponseMessage resposne = client.GetAsync(apiCall);
+                    //}
+
+                    GeocodioClient.GeocodioClient geoClient = new GeocodioClient.GeocodioClient("3551a95da75a999c89a259153a77d2aa9a3d5a2");
+
+                    string street = nonPurifiedModel.StreetNumber.ToString() + " " + nonPurifiedModel.Street.ToString();
+
+                    geoClient.Geocode(street, null, null, nonPurifiedModel.Zipcode.ToString());
+
+
+                }
+                else if(nonPurifiedResult.Count == 1 && nonPurifiedResult[0].PurifiedAddressId == null)
+                {
+                    Debug.WriteLine("Calling Third Party API");
+
+                    GeocodioClient.GeocodioClient geoClient = new GeocodioClient.GeocodioClient("3551a95da75a999c89a259153a77d2aa9a3d5a2");
+
+                    string street = nonPurifiedModel.StreetNumber.ToString() + " " + nonPurifiedModel.Street.ToString();
+
+                    Debug.WriteLine(nonPurifiedModel.City);
+
+                    GeocodioClient.GeocodioResponse response = geoClient.Geocode(street, null, null, nonPurifiedModel.Zipcode.ToString());
+
+                    Debug.WriteLine("Response: " + response);
                 }
 
             }
@@ -377,6 +428,7 @@ namespace CivilMapSQLDatabase
 
             return null;
         }
+
 
         public void AddCivilMapPoints(PointsModel item)
         {

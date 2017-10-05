@@ -17,7 +17,7 @@ namespace CivilMapSQLDatabase
 
 
             var address = new PurifiedAddressModel();
-            address.Street = "Waldron";
+            address.Street = "Waldron Street";
             address.StreetNumber = "417";
             address.Zipcode = "47906";
 
