@@ -287,13 +287,13 @@ namespace CivilMapSQLDatabase
             }
         }
 
-        public void AddCivilMapPoints(PointsModel item)
+        public string AddCivilMapPoints(PointsModel item)
         {
             string connectionString = "Data Source=tcp:civilmapdb.database.windows.net,1433;Initial Catalog=civilmapdb-dev;Persist Security Info=False;User ID=civilmapuser;Password=M#apitright95;Connect Timeout=30;Encrypt=True";
             string commandText = "if not exists (select * from INFORMATION_SCHEMA.TABLES where Table_Name='CivilMapPoints')" +
                                  "create table [dbo].[CivilMapPoints] (" +
-                                 "[PointId] NUMERIC (18) NOT NULL," +
-                                 "[PurifiedAddressId] UNIQUEIDENTIFIER NOT NULL," +
+                                 "[PointId] UNIQUEIDENTIFIER NOT NULL," +
+                                 "[PurifiedAddressId] UNIQUEIDENTIFIER NULL," +
                                  "PRIMARY KEY CLUSTERED ([PointId] ASC)," +
                                  "CONSTRAINT [FK_CivilMapPoints_CivilMapPurifiedAddress] FOREIGN KEY ([PurifiedAddressId]) REFERENCES [dbo].[CivilMapPurifiedAddress] ([PurifiedAddressId]))";
 
@@ -310,15 +310,20 @@ namespace CivilMapSQLDatabase
                                   "(@PointId, @PurifiedAddressId)";
                     command = new SqlCommand(commandText, connection);
 
-                    command.Parameters.AddWithValue("@PointId", item.PointId);
-                    command.Parameters.AddWithValue("@PurifiedAddressId", item.PurifiedAddressId);
+                    Guid pointId = Guid.NewGuid();
+                    command.Parameters.AddWithValue("@PointId", pointId);
+                    command.Parameters.AddWithValue("@PurifiedAddressId", item.PurifiedAddressId ?? (object)DBNull.Value);
                     command.ExecuteNonQuery();
                     connection.Close();
+
+                    return pointId.ToString();
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine("Error: " + ex.Message);
+                    System.Diagnostics.Debug.WriteLine("Hits here!");
                 }
+                return null;
             }
         }
 
@@ -340,8 +345,8 @@ namespace CivilMapSQLDatabase
                     {
                         list.Add(new PointsModel
                         {
-                            PointId = reader.GetDecimal(0),
-                            PurifiedAddressId = reader.GetGuid(1)
+                            PointId = reader.GetGuid(0),
+                            PurifiedAddressId = reader.IsDBNull(1) ? (Guid?)null : reader.GetGuid(1)
                         });
                     }
                     connection.Close();
@@ -373,8 +378,8 @@ namespace CivilMapSQLDatabase
                     {
                         list.Add(new PointsModel
                         {
-                            PointId = reader.GetDecimal(0),
-                            PurifiedAddressId = reader.GetGuid(1)
+                            PointId = reader.GetGuid(0),
+                            PurifiedAddressId = reader.IsDBNull(1) ? (Guid?)null : reader.GetGuid(1)
                         });
                     }
                     connection.Close();

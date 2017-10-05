@@ -89,7 +89,6 @@ namespace CivilMapSQLDatabase
             {
                 list.Add(new PointsModel
                 {
-                    PointId = 56892 + i,
                     PurifiedAddressId = Guid.Parse("f8592e81-2dff-48c0-b005-0068df163e0e")
                 });
             }
@@ -164,8 +163,8 @@ namespace CivilMapSQLDatabase
 
         public struct PointsModel
         {
-            public Decimal PointId;    // PK
-            public Guid PurifiedAddressId;   // FK
+            public Guid PointId;    // PK
+            public Guid? PurifiedAddressId;   // FK
         };
         
         public struct PurifiedAddressModel
