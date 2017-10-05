@@ -10,7 +10,8 @@ namespace CivilMapSQLDatabase
 {
     public class AddressPurification : CivilMapSQLDatabaseConnection
     {
-        public string AddCivilMapPurifiedAddress(PurifiedAddressModel model)
+
+        public object AddCivilMapPurifiedAddress(PurifiedAddressModel model)
         {
             string connectionString = "Data Source=tcp:civilmapdb.database.windows.net,1433;Initial Catalog=civilmapdb-dev;Persist Security Info=False;User ID=civilmapuser;Password=M#apitright95;Connect Timeout=30;Encrypt=True";
             string commandText = "if not exists (select * from INFORMATION_SCHEMA.TABLES where Table_Name='CivilMapPurifiedAddress')" +
@@ -32,22 +33,20 @@ namespace CivilMapSQLDatabase
                     connection.Open();
                     command.ExecuteNonQuery();
 
-                    commandText = "Insert into CivilMapPurifiedAddress (PurifiedAddressId, StreetNumber, Street, City, Zipcode, Longitude, Latitude) values " +
-                                  "(@PurifiedAddressId, @StreetNumber, @Street, @City, @Zipcode, @Longitude, @Latitude)";
+                    commandText = "Insert into CivilMapPurifiedAddress (StreetNumber, Street, City, Zipcode, Longitude, Latitude) output INSERTED.PurifiedAddressId values " +
+                                  "(@StreetNumber, @Street, @City, @Zipcode, @Longitude, @Latitude)";
                     command = new SqlCommand(commandText, connection);
 
-                    Guid purifiedAddressId = Guid.NewGuid();
-                    command.Parameters.AddWithValue("@PurifiedAddressId", purifiedAddressId);
                     command.Parameters.AddWithValue("@StreetNumber", model.StreetNumber);
                     command.Parameters.AddWithValue("@Street", model.Street);
                     command.Parameters.AddWithValue("@City", model.City);
                     command.Parameters.AddWithValue("@Zipcode", model.Zipcode);
                     command.Parameters.AddWithValue("@Longitude", model.Longitude);
                     command.Parameters.AddWithValue("@Latitude", model.Latitude);
-                    command.ExecuteNonQuery();
+                    object purifiedAddressId = command.ExecuteScalar();
                     connection.Close();
-                    
-                    return purifiedAddressId.ToString();
+
+                    return purifiedAddressId;
                 }
                 catch (Exception ex)
                 {
@@ -316,7 +315,7 @@ namespace CivilMapSQLDatabase
         {
             string connectionString = "Data Source=tcp:civilmapdb.database.windows.net,1433;Initial Catalog=civilmapdb-dev;Persist Security Info=False;User ID=civilmapuser;Password=M#apitright95;Connect Timeout=30;Encrypt=True";
             string commandText = "if exists (select * from CivilMapNonPurifiedAddress where NonPurifiedAddressId=@NonPurifiedAddressId) " +
-                                 "update CivilMapNonPurifiedAddress set StreetNumber=@StreetNumber, Street=@Street, City=@City, Zipcode=@Zipcode " +
+                                 "update CivilMapNonPurifiedAddress set PurifiedAddressId = @PurifiedAddressId " +
                                  "where NonPurifiedAddressId=@NonPurifiedAddressId " + 
                                  "else " +
                                  "Insert into CivilMapNonPurifiedAddress (NonPurifiedAddressId, StreetNumber, Street, City, Zipcode, PurifiedAddressId) values " +
@@ -403,7 +402,7 @@ namespace CivilMapSQLDatabase
 
                     string street = nonPurifiedModel.StreetNumber.ToString() + " " + nonPurifiedModel.Street.ToString();
 
-                    geoClient.Geocode(street, null, null, nonPurifiedModel.Zipcode.ToString());
+                    PurifiedAddressModel validatedAddress = geoClient.Geocode(street, null, null, nonPurifiedModel.Zipcode.ToString());
 
 
                 }
@@ -417,9 +416,18 @@ namespace CivilMapSQLDatabase
 
                     Debug.WriteLine(nonPurifiedModel.City);
 
-                    GeocodioClient.GeocodioResponse response = geoClient.Geocode(street, null, null, nonPurifiedModel.Zipcode.ToString());
+                    PurifiedAddressModel validatedAddress = geoClient.Geocode(street, null, null, nonPurifiedModel.Zipcode.ToString());
 
-                    Debug.WriteLine("Response: " + response);
+                    object newPurifiedId = AddCivilMapPurifiedAddress(validatedAddress);
+
+                    NonPurifiedAddressModel updateModel = new NonPurifiedAddressModel();
+
+                    updateModel.NonPurifiedAddressId = nonPurifiedResult[0].NonPurifiedAddressId;
+                    updateModel.PurifiedAddressId = Guid.Parse(newPurifiedId.ToString());
+
+                    UpdateCivilMapNonPurifiedAddress(updateModel);
+
+
                 }
 
             }

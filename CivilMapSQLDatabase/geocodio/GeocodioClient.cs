@@ -7,6 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.ComponentModel;
+using Newtonsoft.Json.Linq;
+using CivilMapSQLDatabase;
+
 
 
 namespace GeocodioClient
@@ -31,7 +34,7 @@ namespace GeocodioClient
         /// </summary>
         /// <param name="address">A pre-concatentated street address. Ex: "42370 Bob Hope Dr, Rancho Mirage, CA".</param>
         /// <returns></returns>
-        public GeocodioResponse Geocode(string address)
+        public CivilMapSQLDatabaseConnection.PurifiedAddressModel Geocode(string address)
         {
             var request = new RestRequest("geocode", Method.GET);
             request.AddParameter("q", address);
@@ -44,7 +47,7 @@ namespace GeocodioClient
         /// <param name="street">Contains the house / unit number and the street name. Ex: "42370 Bob Hope Dr".</param>
         /// <param name="postalCode">ZIP code</param>
         /// <param name="concatenateInput">Sometimes Geocodio provides better results when the address parts are concatenated before sending them in</param>
-        public GeocodioResponse Geocode(string street, string city, string state = null, string postalCode = null, bool concatenateInput = false)
+        public CivilMapSQLDatabaseConnection.PurifiedAddressModel Geocode(string street, string city, string state = null, string postalCode = null, bool concatenateInput = false)
         {
             var request = new RestRequest("geocode", Method.GET);
 
@@ -77,7 +80,7 @@ namespace GeocodioClient
             return PerformGeocoding(request);
         }
 
-        private GeocodioResponse PerformGeocoding(RestRequest request)
+        private CivilMapSQLDatabaseConnection.PurifiedAddressModel PerformGeocoding(RestRequest request)
         {
             request.AddParameter("api_key", ApiKey);
 
@@ -90,13 +93,27 @@ namespace GeocodioClient
                 Debug.WriteLine("{0}={1}", name, value);
             }
 
+            var parsedResponse = Newtonsoft.Json.Linq.JObject.Parse(response.Content);
+            var addressComponent = parsedResponse["results"][0]["address_components"];
+            var locationComponent = parsedResponse["results"][0]["location"];
+
+            CivilMapSQLDatabaseConnection.PurifiedAddressModel validatedAddress = new CivilMapSQLDatabaseConnection.PurifiedAddressModel();
+
+            validatedAddress.Street = addressComponent["formatted_street"].ToString();
+            validatedAddress.StreetNumber = addressComponent["number"].ToString();
+            validatedAddress.City = addressComponent["city"].ToString();
+            validatedAddress.Zipcode = addressComponent["zip"].ToString();
+
+            validatedAddress.Latitude = Convert.ToDecimal(locationComponent["lat"]);
+            validatedAddress.Longitude = Convert.ToDecimal(locationComponent["lng"]);
+
             Debug.WriteLine("Response 1: " + response.StatusCode);
 
             switch (response.StatusCode)
             {
                 case HttpStatusCode.OK:
                     {
-                        return response.Data;
+                        return validatedAddress;
                     }
                 case HttpStatusCode.Forbidden:
                     {
