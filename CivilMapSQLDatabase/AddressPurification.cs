@@ -316,10 +316,7 @@ namespace CivilMapSQLDatabase
             string connectionString = "Data Source=tcp:civilmapdb.database.windows.net,1433;Initial Catalog=civilmapdb-dev;Persist Security Info=False;User ID=civilmapuser;Password=M#apitright95;Connect Timeout=30;Encrypt=True";
             string commandText = "if exists (select * from CivilMapNonPurifiedAddress where NonPurifiedAddressId=@NonPurifiedAddressId) " +
                                  "update CivilMapNonPurifiedAddress set PurifiedAddressId = @PurifiedAddressId " +
-                                 "where NonPurifiedAddressId=@NonPurifiedAddressId " + 
-                                 "else " +
-                                 "Insert into CivilMapNonPurifiedAddress (NonPurifiedAddressId, StreetNumber, Street, City, Zipcode, PurifiedAddressId) values " +
-                                 "(@NonPurifiedAddressId, @StreetNumber, @Street, @City, @Zipcode, @PurifiedAddressId)";
+                                 "where NonPurifiedAddressId=@NonPurifiedAddressId";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -328,10 +325,6 @@ namespace CivilMapSQLDatabase
                     SqlCommand command = new SqlCommand(commandText, connection);
                     connection.Open();
                     command.Parameters.AddWithValue("@NonPurifiedAddressId", model.NonPurifiedAddressId);
-                    command.Parameters.AddWithValue("@StreetNumber", model.StreetNumber);
-                    command.Parameters.AddWithValue("@Street", model.Street);
-                    command.Parameters.AddWithValue("@City", model.City);
-                    command.Parameters.AddWithValue("@Zipcode", model.Zipcode);
                     command.Parameters.AddWithValue("@PurifiedAddressId", model.PurifiedAddressId);
                     command.ExecuteNonQuery();
 
@@ -346,13 +339,19 @@ namespace CivilMapSQLDatabase
 
         public async Task<Guid?> ValidateAddress(PurifiedAddressModel model)
         {
+            object nonPurifiedId;
+
+            //See if already valid
             var purifiedResults = new List<PurifiedAddressModel>();
             purifiedResults = SelectCivilMapPurifiedAddress(model);
 
             Debug.WriteLine(purifiedResults.Count);
 
             if(purifiedResults.Count == 0)
-            { 
+            {
+                object newPurifiedId;
+                PurifiedAddressModel validatedAddress;
+
                 Console.WriteLine("Address Did Not Exist");
                 NonPurifiedAddressModel nonPurifiedModel = new NonPurifiedAddressModel();
                 nonPurifiedModel.Street = model.Street;
@@ -360,6 +359,7 @@ namespace CivilMapSQLDatabase
                 nonPurifiedModel.Zipcode = model.Zipcode;
                 nonPurifiedModel.City = model.City;
 
+                //See if already exists
                 var nonPurifiedResult = new List<NonPurifiedAddressModel>();
                 nonPurifiedResult = SelectCivilMapNonPurifiedAddress(nonPurifiedModel);
 
@@ -369,66 +369,57 @@ namespace CivilMapSQLDatabase
 
                 if (nonPurifiedResult.Count == 0 )
                 {
-                    object nonPurifiedResponse;
-                    nonPurifiedResponse = AddValidationCivilMapNonPurifiedAddress(nonPurifiedModel);
-                    Debug.WriteLine("Added Address with ID: " + nonPurifiedResponse);
+                    //Add to nonPurified
+                    nonPurifiedId = AddValidationCivilMapNonPurifiedAddress(nonPurifiedModel);
+                    Debug.WriteLine("Added Address with ID: " + nonPurifiedId);
 
-                    //call geocod.io
-                    //string apiCall = "street=" + nonPurifiedModel.StreetNumber.ToString();
-                    //apiCall += "+" + nonPurifiedModel.Street.ToString().Replace(" ", "+") + "&";
-
-                    //if(nonPurifiedModel.City != null)
-                    //{
-                    //    apiCall += "city=" + nonPurifiedModel.City.ToString() + "&";
-                    //}
-                    //if(nonPurifiedModel.Zipcode != null)
-                    //{
-                    //    apiCall += "zip=" + nonPurifiedModel.Zipcode.ToString() + "&";
-                    //}
-                    //apiCall += "state=IL&";
-
-                    //apiCall += "api_key=3551a95da75a999c89a259153a77d2aa9a3d5a2";
-
-                    //using (var client = new HttpClient())
-                    //{
-                    //    client.BaseAddress = new Uri("https://api.geocod.io/v1/geocode?");
-                    //    client.DefaultRequestHeaders.Accept.Clear();
-                    //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                    //    HttpResponseMessage resposne = client.GetAsync(apiCall);
-                    //}
-
+                    //Geocode
                     GeocodioClient.GeocodioClient geoClient = new GeocodioClient.GeocodioClient("3551a95da75a999c89a259153a77d2aa9a3d5a2");
-
                     string street = nonPurifiedModel.StreetNumber.ToString() + " " + nonPurifiedModel.Street.ToString();
-
-                    PurifiedAddressModel validatedAddress = geoClient.Geocode(street, null, null, nonPurifiedModel.Zipcode.ToString());
-
-
+                    validatedAddress = geoClient.Geocode(street, null, null, nonPurifiedModel.Zipcode.ToString());
                 }
                 else if(nonPurifiedResult.Count == 1 && nonPurifiedResult[0].PurifiedAddressId == null)
                 {
+                    nonPurifiedId = nonPurifiedResult[0].NonPurifiedAddressId;
+
                     Debug.WriteLine("Calling Third Party API");
 
                     GeocodioClient.GeocodioClient geoClient = new GeocodioClient.GeocodioClient("3551a95da75a999c89a259153a77d2aa9a3d5a2");
-
                     string street = nonPurifiedModel.StreetNumber.ToString() + " " + nonPurifiedModel.Street.ToString();
+                    validatedAddress = geoClient.Geocode(street, null, null, nonPurifiedModel.Zipcode.ToString());
+                }
+                else
+                {
+                    return null;  //CHANGE
+                }
 
-                    Debug.WriteLine(nonPurifiedModel.City);
+                var doesPurifiedExist = new List<PurifiedAddressModel>();
+                doesPurifiedExist = SelectCivilMapPurifiedAddress(validatedAddress);
 
-                    PurifiedAddressModel validatedAddress = geoClient.Geocode(street, null, null, nonPurifiedModel.Zipcode.ToString());
+                Debug.WriteLine("Purified Select Count: " + purifiedResults.Count);
 
-                    object newPurifiedId = AddCivilMapPurifiedAddress(validatedAddress);
-
-                    NonPurifiedAddressModel updateModel = new NonPurifiedAddressModel();
-
-                    updateModel.NonPurifiedAddressId = nonPurifiedResult[0].NonPurifiedAddressId;
-                    updateModel.PurifiedAddressId = Guid.Parse(newPurifiedId.ToString());
-
-                    UpdateCivilMapNonPurifiedAddress(updateModel);
-
+                if (doesPurifiedExist.Count > 0)
+                {
+                    Debug.WriteLine("Count > 0");
+                    //GET ID and Update
+                    newPurifiedId = null; //CHANGE
 
                 }
+                else
+                {
+                    Debug.WriteLine("Exists in nonPurified");
+                    newPurifiedId = AddCivilMapPurifiedAddress(validatedAddress);
+
+                    Debug.WriteLine("Returned ID: " + newPurifiedId);
+                    Debug.WriteLine("Updating where ID = " + nonPurifiedId);
+                }
+
+                NonPurifiedAddressModel updateModel = new NonPurifiedAddressModel();
+
+                updateModel.NonPurifiedAddressId = Guid.Parse(nonPurifiedId.ToString());
+                updateModel.PurifiedAddressId = Guid.Parse(newPurifiedId.ToString());
+            
+                UpdateCivilMapNonPurifiedAddress(updateModel);
 
             }
 
