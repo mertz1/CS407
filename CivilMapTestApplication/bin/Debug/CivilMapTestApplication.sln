@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CivilMapRESTApi", "..\..\..\..\CivilMapRESTApi\CivilMapRESTApi\CivilMapRESTApi.csproj", "{720008A5-724C-43D3-BC75-95A283F8166F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CivilMapSQLDatabase", "..\..\..\CivilMapSQLDatabase\CivilMapSQLDatabase\CivilMapSQLDatabase.csproj", "{EC4FBD7A-A591-40DC-8CE3-EAFD357C3A2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CivilMapTestApplication", "..\..\CivilMapTestApplication.csproj", "{529A32BA-51F8-4D13-8269-23726B89C68F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{720008A5-724C-43D3-BC75-95A283F8166F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{720008A5-724C-43D3-BC75-95A283F8166F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{720008A5-724C-43D3-BC75-95A283F8166F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{720008A5-724C-43D3-BC75-95A283F8166F}.Debug|x86.Build.0 = Debug|Any CPU
+		{720008A5-724C-43D3-BC75-95A283F8166F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{720008A5-724C-43D3-BC75-95A283F8166F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{720008A5-724C-43D3-BC75-95A283F8166F}.Release|x86.ActiveCfg = Release|Any CPU
+		{720008A5-724C-43D3-BC75-95A283F8166F}.Release|x86.Build.0 = Release|Any CPU
+		{EC4FBD7A-A591-40DC-8CE3-EAFD357C3A2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC4FBD7A-A591-40DC-8CE3-EAFD357C3A2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC4FBD7A-A591-40DC-8CE3-EAFD357C3A2B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EC4FBD7A-A591-40DC-8CE3-EAFD357C3A2B}.Debug|x86.Build.0 = Debug|Any CPU
+		{EC4FBD7A-A591-40DC-8CE3-EAFD357C3A2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC4FBD7A-A591-40DC-8CE3-EAFD357C3A2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC4FBD7A-A591-40DC-8CE3-EAFD357C3A2B}.Release|x86.ActiveCfg = Release|Any CPU
+		{EC4FBD7A-A591-40DC-8CE3-EAFD357C3A2B}.Release|x86.Build.0 = Release|Any CPU
+		{529A32BA-51F8-4D13-8269-23726B89C68F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{529A32BA-51F8-4D13-8269-23726B89C68F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{529A32BA-51F8-4D13-8269-23726B89C68F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{529A32BA-51F8-4D13-8269-23726B89C68F}.Debug|x86.Build.0 = Debug|Any CPU
+		{529A32BA-51F8-4D13-8269-23726B89C68F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{529A32BA-51F8-4D13-8269-23726B89C68F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{529A32BA-51F8-4D13-8269-23726B89C68F}.Release|x86.ActiveCfg = Release|Any CPU
+		{529A32BA-51F8-4D13-8269-23726B89C68F}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F7E8CEB6-E7F5-42C8-8B17-8A99CE6D2C73}
+	EndGlobalSection
+EndGlobal
