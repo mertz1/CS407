@@ -21,13 +21,12 @@ namespace CivilMapSQLDatabase
             //address.AddressModel.Street = "Waldron Street";
             //address.AddressModel.StreetNumber = "417";
             //address.AddressModel.Zipcode = "47906";
-
             //addressPurification.ValidateAddress(address);
 
 
             var lon = -87.4262;
             var lat = 41.2387;
-            var rad = 0.97;
+            var rad = 2;
             visualizationDataAggregation.SelectCivilMapPurifiedAddress(lon, lat, rad);
 
 
