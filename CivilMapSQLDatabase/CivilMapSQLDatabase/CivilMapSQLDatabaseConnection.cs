@@ -24,31 +24,10 @@ namespace CivilMapSQLDatabase
             //addressPurification.ValidateAddress(address);
 
 
-            var lon = -87.4262;
-            var lat = 41.2387;
-            var rad = 2;
+            var lon = -87.743611;
+            var lat = 41.116365;
+            var rad = 0.5;
             visualizationDataAggregation.SelectCivilMapPurifiedAddress(lon, lat, rad);
-
-
-            //var models = PurifiedModelPrepare();
-            //foreach(var item in models)
-            //{
-            //    var list = addressPurification.SelectCivilMapPurifiedAddress(item);
-            //    if(list.Count == 0 || list == null)
-            //    {
-            //        string str = addressPurification.AddCivilMapPurifiedAddress(item);
-            //        Console.WriteLine(str);
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine("Existed: ");
-            //        foreach(var ll in list)
-            //        {
-            //            Console.WriteLine("     " + ll.PurifiedAddressId);
-            //        }
-            //    }
-            //}
-
 
 
             //crimeAndArrestDataRetrieve.GetCivilMapCrime();

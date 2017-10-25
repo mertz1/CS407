@@ -13,12 +13,19 @@ namespace CivilMapSQLDatabase
     {
         string connectionString = "Data Source=tcp:civilmapdb.database.windows.net,1433;Initial Catalog=civilmapdb-dev;Persist Security Info=False;User ID=civilmapuser;Password=M#apitright95;Connect Timeout=30;Encrypt=True";
 
-        // Return points in a given area, given a specific center point and radius
-        public List<PurifiedAddressModel> SelectCivilMapPurifiedAddress(double longitude, double latitude, double radius)
+        // Return points in a selectd circle area, given a specific center point and radius
+        public List<PurifiedAddressModel> SelectCivilMapPurifiedAddress(double lon, double lat, double radius)
         {
-            string commandText = "select * from CivilMapPurifiedAddress where " +
-                                 "Longitude between @minLon and @maxLon " +
-                                 "and Latitude between @minLat and @maxLat";
+            string commandText = "Select PurifiedAddressId, StreetNumber, Street, City, Zipcode, Longitude, Latitude, " +
+                                 "acos(sin(@lat)*sin(radians(Latitude)) + cos(@lat)*cos(radians(Latitude))*cos(radians(Longitude)-@lon)) * @earthRadius As D " +
+                                 "From ( " +
+                                    "Select * " +
+                                    "From CivilMapPurifiedAddress where " +
+                                    "Longitude between @minLon and @maxLon " +
+                                    "and Latitude between @minLat and @maxLat " +
+                                 ") As FirstCut " +
+                                 "Where (acos(sin(@lat)*sin(radians(Latitude)) + cos(@lat)*cos(radians(Latitude))*cos(radians(Longitude)-@lon)) * @earthRadius) <= @radius " +
+                                 "Order By D";
 
             double earthRadius = 6371; // in km
             var list = new List<PurifiedAddressModel>();
@@ -27,22 +34,22 @@ namespace CivilMapSQLDatabase
             {
                 try
                 {
-                    var maxLat = latitude + (radius / earthRadius);
-                    var minLat = latitude - (radius / earthRadius);
-                    var maxLon = longitude + Math.Asin(radius / earthRadius) / Math.Cos(DegreeToRadians(latitude));
-                    var minLon = longitude - Math.Asin(radius / earthRadius) / Math.Cos(DegreeToRadians(latitude));
-
-                    Debug.WriteLine("min / max lon: " + minLon + " " + maxLon);
-                    Debug.WriteLine("min / max lat: " + minLat + " " + maxLat);
+                    var maxLat = lat + (radius / earthRadius);
+                    var minLat = lat - (radius / earthRadius);
+                    var maxLon = lon + Math.Asin(radius / earthRadius) / Math.Cos(DegreeToRadians(lat));
+                    var minLon = lon - Math.Asin(radius / earthRadius) / Math.Cos(DegreeToRadians(lat));
 
                     SqlCommand command = new SqlCommand(commandText, connection);
                     connection.Open();
+                    command.Parameters.AddWithValue("@lat", Convert.ToDecimal(DegreeToRadians(lat)));
+                    command.Parameters.AddWithValue("@lon", Convert.ToDecimal(DegreeToRadians(lon)));
+                    command.Parameters.AddWithValue("@earthRadius", Convert.ToDecimal(earthRadius));
+                    command.Parameters.AddWithValue("@radius", Convert.ToDecimal(radius));
                     command.Parameters.AddWithValue("@minLat", Convert.ToDecimal(minLat));
                     command.Parameters.AddWithValue("@maxLat", Convert.ToDecimal(maxLat));
                     command.Parameters.AddWithValue("@minLon", Convert.ToDecimal(minLon));
                     command.Parameters.AddWithValue("@maxLon", Convert.ToDecimal(maxLon));
                     
-
                     SqlDataReader reader = command.ExecuteReader();
 
                     while (reader.Read())
@@ -60,15 +67,18 @@ namespace CivilMapSQLDatabase
                             Longitude = reader.GetDecimal(5),
                             Latitude = reader.GetDecimal(6)
                         });
+                        Debug.WriteLine(reader.GetDouble(7));
                     }
                     connection.Close();
 
-                    Debug.WriteLine("list length = " + list.Count());
+                    //Debug.WriteLine("list length = " + list.Count());
+                    //Debug.WriteLine("min / max lon: " + minLon + " " + maxLon);
+                    //Debug.WriteLine("min / max lat: " + minLat + " " + maxLat);
 
-                    foreach(var item in list)
-                    {
-                        Debug.WriteLine("Selected lon / lat: " + item.Longitude + " " + item.Latitude);
-                    }
+                    //foreach(var item in list)
+                    //{
+                    //    Debug.WriteLine("Selected lon / lat: " + item.Longitude + " " + item.Latitude);
+                    //}
                 }
                 catch(Exception ex)
                 {
