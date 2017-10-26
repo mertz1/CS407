@@ -26,7 +26,7 @@ namespace CivilMapSQLDatabase
 
             var lon = -87.743611;
             var lat = 41.116365;
-            var rad = 0.5;
+            var rad = 2;
             visualizationDataAggregation.SelectCivilMapPurifiedAddress(lon, lat, rad);
 
 

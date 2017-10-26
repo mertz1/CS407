@@ -75,7 +75,7 @@ namespace CivilMapSQLDatabase
                     //Debug.WriteLine("min / max lon: " + minLon + " " + maxLon);
                     //Debug.WriteLine("min / max lat: " + minLat + " " + maxLat);
 
-                    //foreach(var item in list)
+                    //foreach (var item in list)
                     //{
                     //    Debug.WriteLine("Selected lon / lat: " + item.Longitude + " " + item.Latitude);
                     //}
