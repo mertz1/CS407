@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Diagnostics;
 using System.Threading;
 using CivilMapRESTApi.Models;
 using CivilMapSQLDatabase;
@@ -14,11 +15,12 @@ namespace CivilMapRESTApi.Controllers
     {
         [HttpGet]
         [Route("api/addressPurification/getCivilMapPurifiedAddress")]
-        public IEnumerable<PurifiedAddressRESTModel> GetCivilMapPurifiedAddress()
+        public HttpResponseMessage GetCivilMapPurifiedAddress()
         {
             using (AddressPurification addressPurification = new AddressPurification())
             {
                 var resultList = new List<PurifiedAddressRESTModel>();
+                HttpResponseMessage response;
                 try
                 {
                     var list = addressPurification.GetCivilMapPurifiedAddress();
@@ -27,23 +29,29 @@ namespace CivilMapRESTApi.Controllers
                     {
                         resultList.Add(ConvertPurifiedAddressModelToRESTModel(item));
                     }
+
+                    if(resultList.Count() == 0)
+                        response = Request.CreateResponse(HttpStatusCode.NotFound, "Not Found, please check URL");
+                    else
+                        response = Request.CreateResponse(HttpStatusCode.OK, resultList.AsEnumerable());
                 }
                 catch(Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine("Error: " + ex.Message);
+                    Debug.WriteLine("Error: " + ex.Message);
+                    response = Request.CreateResponse(HttpStatusCode.ExpectationFailed, ex.Message);
                 }
-
-                return resultList;
+                return response;
             }
         }
         
         [HttpGet]
         [Route("api/addressPurification/selectCivilMapPurifiedAddress/{streetNumber}/{street}/{city}/{zipcode}")]
-        public List<PurifiedAddressRESTModel> SelectCivilMapPurifiedAddress(string streetNumber, string street, string city, string zipcode)
+        public HttpResponseMessage SelectCivilMapPurifiedAddress(string streetNumber, string street, string city, string zipcode)
         {
             using (AddressPurification addressPurification = new AddressPurification())
             {
                 var resultList = new List<PurifiedAddressRESTModel>();
+                HttpResponseMessage response;
                 try
                 {
                     var model = new CivilMapSQLDatabaseConnection.PurifiedAddressModel
@@ -61,41 +69,52 @@ namespace CivilMapRESTApi.Controllers
                     {
                         resultList.Add(ConvertPurifiedAddressModelToRESTModel(item));
                     }
+
+                    if (resultList.Count() == 0)
+                        response = Request.CreateResponse(HttpStatusCode.NotFound, "Not Found, please check URL");
+                    else
+                        response = Request.CreateResponse(HttpStatusCode.OK, resultList.AsEnumerable());
                 }
                 catch(Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine("Error: " + ex.Message);
+                    Debug.WriteLine("Error: " + ex.Message);
+                    response = Request.CreateResponse(HttpStatusCode.ExpectationFailed, ex.Message);
                 }
-                return resultList;
+                return response;
             }
         }
 
 
         [HttpPost]
         [Route("api/addressPurification/addCivilMapPurifiedAddress")]
-        public void AddCivilMapPurifiedAddress([FromBody]PurifiedAddressRESTModel purifiedAddress)
+        public HttpResponseMessage AddCivilMapPurifiedAddress([FromBody]PurifiedAddressRESTModel purifiedAddress)
         {
             using (AddressPurification addressPurification = new AddressPurification())
             {
+                HttpResponseMessage response;
                 try
                 {
                     var item = ConvertPurifiedAddressRESTModelToDBModel(purifiedAddress);                    
                     addressPurification.AddCivilMapPurifiedAddress(item);
+                    response = Request.CreateResponse(HttpStatusCode.Created, item);
                 }
                 catch(Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine("Error: " + ex.Message);
+                    Debug.WriteLine("Error: " + ex.Message);
+                    response = Request.CreateResponse(HttpStatusCode.ExpectationFailed, ex.Message);
                 }
+                return response;
             }
         }
 
         [HttpGet]
         [Route("api/addressPurification/getCivilMapPoints")]
-        public IEnumerable<PointsRESTModel> GetCivilMapPoints()
+        public HttpResponseMessage GetCivilMapPoints()
         {
             using (AddressPurification addressPurification = new AddressPurification())
             {
                 var resultList = new List<PointsRESTModel>();
+                HttpResponseMessage response;
                 try
                 {
                     var list = addressPurification.GetCivilMapPoints();
@@ -104,67 +123,89 @@ namespace CivilMapRESTApi.Controllers
                     {
                         resultList.Add(ConvertPointsModelToRESTModel(item));
                     }
+
+                    if (resultList.Count() == 0)
+                        response = Request.CreateResponse(HttpStatusCode.NotFound, "Not Found, please check URL");
+                    else
+                        response = Request.CreateResponse(HttpStatusCode.OK, resultList.AsEnumerable());
                 }
                 catch(Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine("Error: " + ex.Message);
+                    Debug.WriteLine("Error: " + ex.Message);
+                    response = Request.CreateResponse(HttpStatusCode.ExpectationFailed, ex.Message);
                 }
-                return resultList;
+                return response;
             }
         }
 
+
         [HttpGet]
         [Route("api/addressPurification/selectCivilMapPoints/{pointId}")]
-        public List<PointsRESTModel> SelectCivilMapPoints(string pointId)
+        public HttpResponseMessage SelectCivilMapPoints(string pointId)
         {
             using (AddressPurification addressPurification = new AddressPurification())
             {
                 var resultList = new List<PointsRESTModel>();
+                HttpResponseMessage response;
                 try
                 {
                     var model = new CivilMapSQLDatabaseConnection.PointsModel
                     {
                         PointId = Guid.Parse(pointId)
                     };
+
                     var list = addressPurification.SelectCivilMapPoints(model);
+
                     foreach (var item in list)
                     {
                         resultList.Add(ConvertPointsModelToRESTModel(item));
                     }
+
+                    if (resultList.Count() == 0)
+                        response = Request.CreateResponse(HttpStatusCode.NotFound, "Not Found, please check URL");
+                    else
+                        response = Request.CreateResponse(HttpStatusCode.OK, resultList.AsEnumerable());
                 }
                 catch(Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine("Error: " + ex.Message);
+                    Debug.WriteLine("Error: " + ex.Message);
+                    response = Request.CreateResponse(HttpStatusCode.ExpectationFailed, ex.Message);
                 }
-                return resultList;
+                return response;
             }
         }
 
         [HttpPost]
         [Route("api/addressPurification/addCivilMapPoints")]
-        public void AddCivilMapPoints([FromBody]PointsRESTModel points)
+        public HttpResponseMessage AddCivilMapPoints([FromBody]PointsRESTModel points)
         {
             using (AddressPurification addressPurification = new AddressPurification())
             {
+                HttpResponseMessage response;
                 try
                 {
                     var item = ConvertPointsRESTModelToDBModel(points);
                     addressPurification.AddCivilMapPoints(item);
+                    response = Request.CreateResponse(HttpStatusCode.Created, item);
                 }
                 catch(Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine("Error: " + ex.Message);
+                    Debug.WriteLine("Error: " + ex.Message);
+                    response = Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message);
                 }
+                return response;
             }
         }
 
+
         [HttpGet]
         [Route("api/addressPurification/getCivilMapNonPurifiedAddress")]
-        public IEnumerable<NonPurifiedAddressRESTModel> GetCivilMapNonPurifiedAddress()
+        public HttpResponseMessage GetCivilMapNonPurifiedAddress()
         {
             using (AddressPurification addressPurification = new AddressPurification())
             {
                 var resultList = new List<NonPurifiedAddressRESTModel>();
+                HttpResponseMessage response;
                 try
                 {
                     var list = addressPurification.GetCivilMapNonPurifiedAddress();
@@ -172,22 +213,29 @@ namespace CivilMapRESTApi.Controllers
                     {
                         resultList.Add(ConvertNonPurifiedAddressModelToRESTModel(item));
                     }
+
+                    if (resultList.Count() == 0)
+                        response = Request.CreateResponse(HttpStatusCode.NotFound, "Not Found, please check URL");
+                    else
+                        response = Request.CreateResponse(HttpStatusCode.OK, resultList.AsEnumerable());
                 }
                 catch(Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine("Error: " + ex.Message);
+                    Debug.WriteLine("Error: " + ex.Message);
+                    response = Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message);
                 }
-                return resultList;
+                return response;
             }
         }
 
         [HttpGet]
         [Route("api/addressPurification/selectCivilMapNonPurifiedAddress/{streetNumber}/{street}/{city}/{zipcode}")]
-        public List<NonPurifiedAddressRESTModel> SelectCivilMapNonPurifiedAddress(string streetNumber, string street, string city, string zipcode)
+        public HttpResponseMessage SelectCivilMapNonPurifiedAddress(string streetNumber, string street, string city, string zipcode)
         {
             using (AddressPurification addressPurification = new AddressPurification())
             {
                 var resultList = new List<NonPurifiedAddressRESTModel>();
+                HttpResponseMessage response;
                 try
                 {
                     var model = new CivilMapSQLDatabaseConnection.NonPurifiedAddressModel
@@ -205,23 +253,30 @@ namespace CivilMapRESTApi.Controllers
                     {
                         resultList.Add(ConvertNonPurifiedAddressModelToRESTModel(item));
                     }
+
+                    if (resultList.Count() == 0)
+                        response = Request.CreateResponse(HttpStatusCode.NotFound, "Not Found, please check URL");
+                    else
+                        response = Request.CreateResponse(HttpStatusCode.OK, resultList.AsEnumerable());
                 }
                 catch(Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine("Error: " + ex.Message);
+                    Debug.WriteLine("Error: " + ex.Message);
+                    response = Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message);
                 }
-                return resultList;
+                return response;
             }
         }
 
         
         [HttpGet]
         [Route("api/addressPurification/selectAliasNonPurifiedAddress/{purifiedAddressId}")]
-        public List<NonPurifiedAddressRESTModel> SelectAliasNonPurifiedAddress(string purifiedAddressId)
+        public HttpResponseMessage SelectAliasNonPurifiedAddress(string purifiedAddressId)
         {
             using (AddressPurification addressPurification = new AddressPurification())
             {
                 var resultList = new List<NonPurifiedAddressRESTModel>();
+                HttpResponseMessage response;
                 try
                 {
                     var id = Guid.Parse(purifiedAddressId);
@@ -230,88 +285,109 @@ namespace CivilMapRESTApi.Controllers
                     {
                         resultList.Add(ConvertNonPurifiedAddressModelToRESTModel(item));
                     }
+
+                    if (resultList.Count() == 0)
+                        response = Request.CreateResponse(HttpStatusCode.NotFound, "Not Found, please check URL");
+                    else
+                        response = Request.CreateResponse(HttpStatusCode.OK, resultList.AsEnumerable());
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine("Error: " + ex.Message);
+                    Debug.WriteLine("Error: " + ex.Message);
+                    response = Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message);
                 }
-                return resultList;
+                return response;
             }
         }
 
 
         [HttpPost]
         [Route("api/addressPurification/addCivilMapNonPurifiedAddress")]
-        public void AddCivilMapNonPurifiedAddress([FromBody]NonPurifiedAddressRESTModel nonPurifiedAddress)
+        public HttpResponseMessage AddCivilMapNonPurifiedAddress([FromBody]NonPurifiedAddressRESTModel nonPurifiedAddress)
         {
             using (AddressPurification addressPurification = new AddressPurification())
             {
+                HttpResponseMessage response;
                 try
                 {
                     var item = ConvertNonPurifiedAddressRESTModelToDBModel(nonPurifiedAddress);
                     addressPurification.AddCivilMapNonPurifiedAddress(item);
+                    response = Request.CreateResponse(HttpStatusCode.Created, item);
                 }
                 catch(Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine("Error: " + ex.Message);
+                    Debug.WriteLine("Error: " + ex.Message);
+                    response = Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message);
                 }
+                return response;
             }
         }
         
 
         [HttpPost]
         [Route("api/addressPurification/addValidationCivilMapNonPurifiedAddress")]
-        public void AddValidationCivilMapNonPurifiedAddress([FromBody]NonPurifiedAddressRESTModel nonPurifiedAddress)
+        public HttpResponseMessage AddValidationCivilMapNonPurifiedAddress([FromBody]NonPurifiedAddressRESTModel nonPurifiedAddress)
         {
             using (AddressPurification addressPurification = new AddressPurification())
             {
+                HttpResponseMessage response;
                 try
                 {
                     var item = ConvertNonPurifiedAddressRESTModelToDBModel(nonPurifiedAddress);
                     addressPurification.AddValidationCivilMapNonPurifiedAddress(item);
+                    response = Request.CreateResponse(HttpStatusCode.Created, item);
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine("Error: " + ex.Message);
+                    Debug.WriteLine("Error: " + ex.Message);
+                    response = Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message);
                 }
+                return response;
             }
         }
 
         [HttpPut]
         [Route("api/addressPurification/updateCivilMapNonPurifiedAddress/{id}")]
-        public void UpdateCivilMapNonPurifiedAddress(string id, [FromBody]NonPurifiedAddressRESTModel nonPurifiedAddress)
+        public HttpResponseMessage UpdateCivilMapNonPurifiedAddress(string id, [FromBody]NonPurifiedAddressRESTModel nonPurifiedAddress)
         {
             using (AddressPurification addressPurification = new AddressPurification())
             {
+                HttpResponseMessage response;
                 try
                 {
                     if (nonPurifiedAddress == null || !nonPurifiedAddress.NonPurifiedAddressId.Equals(id))
                     {
-                        return;
+                        response = Request.CreateResponse(HttpStatusCode.NotFound, "Id does not match model identifier, please check URL");
+                        return response;
                     } 
                     else
                     {
                         var item = ConvertNonPurifiedAddressRESTModelToDBModel(nonPurifiedAddress);
                         item.NonPurifiedAddressId = Guid.Parse(nonPurifiedAddress.NonPurifiedAddressId);
                         addressPurification.UpdateCivilMapNonPurifiedAddress(item);
+                        response = Request.CreateResponse(HttpStatusCode.OK, item);
                     }
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine("Error: " + ex.Message);
+                    Debug.WriteLine("Error: " + ex.Message);
+                    response = Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message);
                 }
+                return response;
             }
         }
 
+
         [HttpGet]
-        [Route("api/addressPurification/ValidateAddress/{streetNumber}/{street}/{city}/{zipcode}")]
-        public void ValidateAddress(string streetNumber, string street, string city, string zipcode)
+        [Route("api/addressPurification/validateAddress/{streetNumber}/{street}/{city}/{zipcode}")]
+        public HttpResponseMessage ValidateAddress(string streetNumber, string street, string city, string zipcode)
         {
             using (AddressPurification addressPurification = new AddressPurification())
             {
+                HttpResponseMessage response;
                 try
                 {
-                    var model = new CivilMapSQLDatabaseConnection.PurifiedAddressModel
+                    var item = new CivilMapSQLDatabaseConnection.PurifiedAddressModel
                     {
                         AddressModel = new CivilMapSQLDatabaseConnection.AddressModel
                         {
@@ -321,12 +397,15 @@ namespace CivilMapRESTApi.Controllers
                             Zipcode = zipcode
                         }
                     };
-                    addressPurification.ValidateAddress(model);
+                    addressPurification.ValidateAddress(item);
+                    response = Request.CreateResponse(HttpStatusCode.OK, item);
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine("Error: " + ex.Message);
+                    Debug.WriteLine("Error: " + ex.Message);
+                    response = Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message);
                 }
+                return response;
             }
         }
 
