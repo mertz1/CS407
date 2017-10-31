@@ -1,0 +1,211 @@
+@charset "utf-8";
+body{
+	padding: 0px;
+	margin-top: 0px;
+}
+*{
+    padding: 0px;
+    margin: 0px;
+}
+
+.banner {
+    height: 5vw;
+    width: 100%;
+    background-color: white;
+    line-height: 5vw;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.icon {
+	line-height: 7vh;
+    width: 19vw;
+}
+
+.line {
+    width: 0px;
+    height: 31px;
+    color: black;
+    position: absolute;
+    top: 7px;
+    right: 11vw;
+}
+
+.logout_btn {
+    color: black;
+    position: absolute;
+    right: 2vw;
+    font-size: 2vw;
+    font-family: Hannotate SC;
+    border-style: none;
+    background: white;
+    height: 6vh;
+}
+
+.side_bar {
+    width: 17vw;
+    height: 86vh;
+    position: absolute;
+    background: #312f2f;
+    text-align: center;
+}
+
+.side_bar_text {
+    color: white;
+    font-size: 2.5vw;
+    font-family: Helvetica;
+    margin-top: 4vh;
+}
+
+.side_bar_option {
+    margin-top: 4vh;
+    background: #9c9595;
+    height: 68vh;
+}
+
+.side_bar_button {
+    color: white;
+    font-size: 2vw;
+    font-family: Hannotate SC;
+    margin-top: 4vh;
+    margin-bottom: 1vh;
+    -webkit-text-emphasis-style: none;
+    background: #9b9495;
+    border-style: none;
+}
+
+.main_map {
+    position: absolute;
+    width: 83vw;
+    height: 86vh;
+    right: 0;
+}
+
+.date {
+    background: #73706e;
+    color: white;
+    width: 19.1vw;
+    margin-top: 2.5vh;
+    margin-left: 2vw;
+    margin-bottom: 0;
+    margin-right: 0;
+    height: 6vh;
+    line-height: 5vh;
+    text-align: center;
+    padding-left: 8px;
+    font-size: 1.3vw;
+}
+
+.date_option {
+    width: 7vw;
+    height: 6vh;
+    background: #9a9595;
+    border-style: unset;
+    margin-left: 3px;
+    text-align: center;
+}
+
+*::-webkit-input-placeholder {
+    color: white;
+}
+
+.range {
+    background: #73706e;
+    color: white;
+    width: 14.1vw;
+    margin-top: 2.5vh;
+    margin-left: 5vw;
+    margin-right: 0;
+    height: 6vh;
+    line-height: 6vh;
+    text-align: center;
+    font-size: 1.3vw;
+    position: absolute;
+    left: 21vw;
+    top: 0px;
+}
+
+.days {
+    width: 5vw;
+    margin-left: 4px;
+    margin-right: 4px;
+    height: 6vh;
+    background: #9a9595;
+    border-style: unset;
+    text-align: center;
+}
+
+.crime {
+    position: absolute;
+    left: 45vw;
+    top: 2.7vh;
+    background: #73706e;
+    color: white;
+    text-align: center;
+    width: 7.3vw;
+    height: 4vw;
+    border-style: unset;
+    border-radius: 0px;
+    padding-left: 1vw;
+}
+
+.map_select {
+    position: absolute;
+    left: 57vw;
+    top: 2.7vh;
+    background: #73706e;
+    color: white;
+    text-align: center;
+    width: 9.3vw;
+    height: 4vw;
+    border-style: unset;
+    border-radius: 0px;
+    padding-left: 1vw;
+}
+
+.advance {
+    position: absolute;
+    left: 2vw;
+    top: 11.7vh;
+    background: #73706e;
+    color: white;
+    text-align: center;
+    width: 7.3vw;
+    height: 3.3vw;
+    border-style: unset;
+    font-size: 1.3vw;
+    border-radius: 0px;
+    line-height: 3.3vw;
+}
+
+.easy-autocomplete {
+    position: absolute;
+    z-index: 1;
+    top: 13vh;
+    left: 5vw;
+}
+
+.submit_btn {
+    position: absolute;
+    left: 26vw;
+    top: 11.7vh;
+    background: #d61337;
+    color: white;
+    text-align: center;
+    width: 7.3vw;
+    height: 3.3vw;
+    border-style: unset;
+    font-size: 1.3vw;
+    border-radius: 0px;
+    line-height: 3.3vw;
+    border-radius: 11px;
+}
+
+.map {
+    position: absolute;
+    top: 20vh;
+}
+
+.exportpdf{
+    padding-left:50%;
+}
