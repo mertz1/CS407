@@ -132,6 +132,7 @@ function calculateClusterInfo(resolution) {
         maxFeatureCount = Math.max(maxFeatureCount, jj);
         radius = 0.25 * (ol.extent.getWidth(extent) + ol.extent.getHeight(extent))/resolution;
         feature.set('radius', radius);
+        console.log(radius);
     }
 }
 
@@ -144,10 +145,12 @@ function styleFunction(feature, resolution) {
     }
     var style;
     var size = feature.get('features').length;
+        console.log(size);
+        console.log(maxFeatureCount);
     if (size > 1) {
         style = new ol.style.Style({
             image: new ol.style.Circle({
-                radius: feature.get('radius'),
+                radius: feature.get('radius')*5.5,
                 fill: new ol.style.Fill({
                     color: [255, 153, 0, Math.min(0.8, 0.4 + (size/maxFeatureCount))]
                 })
