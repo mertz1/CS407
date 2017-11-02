@@ -35,6 +35,52 @@
         .ol-touch .satellite {
             top: 80px;
         }
+        .ol-mycontrol {
+            background-color: rgba(255,255,255,.4);
+            border-radius: 4px;
+            padding:2px;
+            color:white;
+            position: absolute;
+            width:30px;
+            top: 60px;
+            left:7px;
+        }
+
+        .ol-mycontrol button{
+            display:block;
+            margin:1px;
+            padding:0;
+            color:#fff;
+            font-size:1.14em;
+            font-weight:700;
+            text-decoration:none;
+            text-align:center;
+            height:1.375em;
+            width:1.375em;
+            line-height:.4em;
+            background-color:rgba(0,60,136,.5);
+            border:none;
+            border-radius:2px;
+        }
+        .ol-mycontrol button::-moz-focus-inner{
+            border:none;
+            padding:0;
+        }
+        .ol-mycontrol button:hover{
+            text-decoration:none;
+            background-color:rgba(0,60,136,.7);
+        }
+        #legend
+        {
+            position:absolute;
+            top:40px;
+            left:40px;
+            z-index: 10000;
+            width: 250px;
+            height:250px;
+            background-image: url("../img/overlay.png");
+            visibility: hidden;
+        }
     </style>
 
 </head>
@@ -102,6 +148,7 @@
         <!-- need this for the map -->
         <div id="map" class="map" style="height: 66vh">
             <div id="popup"></div>
+            <div id="legend"></div>
         </div>
 
 
