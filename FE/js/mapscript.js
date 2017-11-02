@@ -290,13 +290,17 @@ app.CustomToolbar = function(opt_options) {
     button3.addEventListener('touchstart', info, false);
     var element = document.createElement('div');
     var element2 = document.createElement('div');
+    var element3 = document.createElement('div');
     element2.id = "testdiv2";
     element.appendChild(element2);
     element.id = "testdiv";
     element.className = 'ol-unselectable ol-mycontrol';
     element.appendChild(button);
     element2.appendChild(button1);
-    element.appendChild(button3);
+    element.appendChild(element3);
+    element3.appendChild(button3);
+    element3.id = "testdiv3";
+    element3.className = 'ol-unselectable ol-info';
 
     // button painted over the map
     ol.control.Control.call(this, {
