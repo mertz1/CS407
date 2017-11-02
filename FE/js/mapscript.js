@@ -93,7 +93,7 @@ var textFill = new ol.style.Fill({
 
 var textStroke = new ol.style.Stroke({
     color: 'rgba(0,0,0, 0.6)',
-    width: 3
+    width: 7
 });
 
 var invisibleFill = new ol.style.Fill({
@@ -104,7 +104,7 @@ function createClusterStyle(feature) {
     return new ol.style.Style({
         geometry: feature.getGeometry(),
         image: new ol.style.RegularShape({
-            radius1: 20,
+            radius1: 15,
             radius2: 3, 
             points: 5,
             angle: Math.PI,
@@ -198,18 +198,22 @@ function initilizeHeatMap() {
 // defines a namespace for the application
 window.app = {};
 var app = window.app;
-var button2;
+// global variable to reset heatmap and clusters
+var hasHeatMap = 0;
+var hasClusters = 0;
 // defines custom toolbar control
 app.CustomToolbar = function(opt_options) {
     var options = opt_options || {};
     // create two buttons for satellite and clusters
     var button = document.createElement('button');
     var button1 = document.createElement('button');
-    button2 = document.createElement('button');
+    var button2 = document.createElement('button');
+    var button3 = document.createElement('button');
     // satellite button icon and cluster button icon
     button.innerHTML = '<img src="../img/WechatIMG6.jpeg" width="18" height="18"/>';
     button1.innerHTML = 'C';
     button2.innerHTML = 'H';
+    button3.innerHTML = 'I';
 
     var this_ = this;
     var clicked = 1; // 0 is viewing osm, 1 is viewing satellite
@@ -229,10 +233,17 @@ app.CustomToolbar = function(opt_options) {
     var canyouseecluster = 0;
     var clustersView = function(e) {
         if (canyouseecluster == 0) {
-            getAllFeatures();
+            if (hasClusters == 0) {
+                hasClusters = 1;
+                getAllFeatures();
+            }
             clusters.setVisible(true);
             markers.setVisible(false);
             canyouseecluster = 1;
+            if (hasHeatMap == 0) {
+                hasHeatMap = 1;
+                initilizeHeatMap();
+            }
         } else if (canyouseecluster == 1) {
             clusters.setVisible(false);
             markers.setVisible(true);
@@ -244,10 +255,23 @@ app.CustomToolbar = function(opt_options) {
     var heatMapView = function(e) {
         if (canyouseeheatmap == 0) {
             canyouseeheatmap = 1;
-            initilizeHeatMap();
+            heatmapSource.setVisible(true);
         } else if (canyouseeheatmap == 1) {
             canyouseeheatmap = 0;
+            heatmapSource.setVisible(false);
         }
+    };
+    var toggleOverlay = 0;
+    var info = function(e) {
+        var elem = document.getElementById('legend');
+        if (toggleOverlay == 0) {
+            toggleOverlay = 1;
+            elem.style.visibility = 'visible';
+        } else if (toggleOverlay == 1) {
+            toggleOverlay = 0;
+            elem.style.visibility = 'hidden'; 
+        }
+
     };
     // adding button listeners
     button.addEventListener('click', handleSatellite, false);
@@ -256,7 +280,8 @@ app.CustomToolbar = function(opt_options) {
     button1.addEventListener('touchstart', clustersView, false);
     button2.addEventListener('click', heatMapView, false);
     button2.addEventListener('touchstart', heatMapView, false);
-
+    button3.addEventListener('click', info, false);
+    button3.addEventListener('touchstart', info, false);
     var element = document.createElement('div');
     var element2 = document.createElement('div');
     element2.id = "testdiv2";
@@ -265,8 +290,8 @@ app.CustomToolbar = function(opt_options) {
     element.className = 'ol-unselectable ol-mycontrol';
     element.appendChild(button);
     element2.appendChild(button1);
-    //element.appendChild(button1);
     element.appendChild(button2);
+    element.appendChild(button3);
 
     // button painted over the map
     ol.control.Control.call(this, {
@@ -348,20 +373,20 @@ function changeProjection() {
         clusters.setVisible(false);
         markers.setVisible(true);
         x.style.display = "none";
-        getCurrentCenterAndRadius();
+        //getCurrentCenterAndRadius();
 
     } else if (zoomLevel > 12 && zoomLevel < 17 ) {
         // you can choose to see it in clusters
         // activate and deactivate clusters button
         //button2.setVisible(true);
         x.style.display = "block";
-        getCurrentCenterAndRadius();
+        //getCurrentCenterAndRadius();
     } else if (zoomLevel <= 12) { // too zoomed out
         // just look at it in clusters
         clusters.setVisible(true);
         markers.setVisible(false);
         x.style.display = "none";
-        getCurrentCenterAndRadius();
+        //getCurrentCenterAndRadius();
     }
 }
 
@@ -487,13 +512,6 @@ map.on('click', function(evt) {
 
 
 //export pdf
-/*var format = new ol.format.WKT();
-var feature = format.readFeature(
-    'POLYGON((10.689697265625 -25.0927734375, 34.595947265625 ' +
-    '-20.1708984375, 38.814697265625 -35.6396484375, 13.502197265625 ' +
-    '-39.1552734375, 10.689697265625 -25.0927734375))');
-feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
-*/
 var dims = {
     a0: [1189, 841],
     a1: [841, 594],
