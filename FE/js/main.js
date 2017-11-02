@@ -184,6 +184,106 @@ function submitForm() {
     resetRequest();
 }
 
+function submitRadiusAndCenter() {
+    resetGlobalVars(); // reset for new map plotting
+    var latitude = -87.628567; // variable to get latitude of center // change this to yours!
+    var longitude = 41.871547; // variable to get longitude of center // change this to yours!
+    var radius = 10000; // variable to get radius // change this to yours!
+    console.log(latitude);
+ var form = document.getElementById("form").elements;
+    var days = Number(form.days.value);
+
+    //check range input
+    if (Number(days) < 0 || Number(days) > 30 || isNaN(Number(days))) {
+        alert("ERROR: Invalid Date Range.");
+        return;
+    }
+
+    //check date input
+    console.log(form.date_start.value);
+    var date = editDate(form.date_start.value, form.date_end.value);
+
+    if (date == 0) {
+        alert("ERROR: Invalid Date Range.");
+        return;
+    }
+    if (date[0].includes("undefined") || date[1].includes("undefined")) {
+        date[0] = "";
+        date[1] = "";
+    }
+
+    /*Validate the input for the beat search value*/
+    var searchbar_value = "";
+    if (!(beats_list.includes(form.searchbar.value)) && form.searchbar.value != "") {
+        alert("Invalid Beat.");
+        return;
+    }
+
+    if (form.searchbar.value !== undefined && form.searchbar.value != null && form.searchbar.value != "") {
+        var searchbar_value = (form.searchbar.value).split("(");
+        var type = searchbar_value[1].split(")");
+
+        if (type[0].includes("Arrest")) {
+            form.crime_type.value = "arrest";
+        } else {
+            form.crime_type.value = "crime";
+        }
+    }
+    var map_info = {
+        'date_start': date[0],
+        'date_end': date[1],
+        'date_range': days,
+        'type': form.crime_type.value,
+        'beat': searchbar_value[0],
+        'latitude': latitude,
+        'longitude': longitude,
+        'radius': radius
+    };
+
+var request2 = map_info["type"];
+    var points = {};
+    $.ajax({
+        url: service + "RequestPointsByRadius",
+        method: 'POST',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(map_info),
+        dataType: 'json',
+        success: function(data) {
+            console.log("request points succeed");
+
+            $.each(data["Points"], function(i) {
+                var point = data["Points"][i];
+                points[i] = { longitude: point["longitude"], latitude: point["latitude"], date: point["date"] };
+            });
+            points["count"] = data["count"];
+
+            //call your function for map render as a callback function of succeed action, example:  
+            console.log(points);
+            plotmap(points, request2);
+                // get heatmap dropdown selection by id
+            var hm = document.getElementById("isHeatmap");
+            if (hm.options[hm.selectedIndex].value == "heatmap") {
+                getAllFeatures();
+                initilizeHeatMap();
+            } else {
+                getAllFeatures();
+            }
+        },
+        error: function(data) {
+            if (data.d["error"] !== 'undefined') {
+                alert("Error: " + JSON.stringify(data.d["error"]));
+            } else {
+                alert("Unhandled Error: " + JSON.stringify(data));
+            }
+        }
+    });
+
+    //Clear all previous result;
+    //document.getElementById("form").reset(); // this causes a bug, do not uncomment
+
+    resetRequest();
+}
+
 /*
 //example function of retreving points from ajax call
 function plotmap(points, type) {
