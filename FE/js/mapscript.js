@@ -210,22 +210,22 @@ app.CustomToolbar = function(opt_options) {
     var button2 = document.createElement('button');
     var button3 = document.createElement('button');
     // satellite button icon and cluster button icon
-    button.innerHTML = '<img src="../img/WechatIMG6.jpeg" width="18" height="18"/>';
+    button.innerHTML = '<img src="../img/WechatIMG7.jpeg" width="18" height="18"/>';
     button1.innerHTML = 'C';
     button2.innerHTML = 'H';
     button3.innerHTML = 'I';
 
     var this_ = this;
-    var clicked = 1; // 0 is viewing osm, 1 is viewing satellite
+    var clicked = 0; // 0 is viewing osm, 1 is viewing satellite
     var handleSatellite = function(e) {
         if (clicked == 0) { // enable satellite view
             // the reason why i used osm here is because in my map,
             // osm is rendered on top of sat
-            osm.setVisible(false);
+            sat.setVisible(false);
             button.innerHTML = '<img src="../img/WechatIMG6.jpeg" width="18" height="18"/>';
             clicked = 1;
         } else if (clicked == 1) { // disable satellite view 
-            osm.setVisible(true);
+            sat.setVisible(true);
             button.innerHTML = '<img src="../img/WechatIMG7.jpeg" width="18" height="18"/>';
             clicked = 0;
         }
@@ -347,7 +347,7 @@ var map = new ol.Map({
         new app.CustomToolbar()
     ]),
     target: 'map',
-    layers: [sat, osm, markers, clusters],
+    layers: [osm, sat, markers, clusters],
     interactions: new ol.interaction.defaults().extend([new ol.interaction.Select({
         condition: function(evt) {
             return evt.type == 'pointermove' ||
