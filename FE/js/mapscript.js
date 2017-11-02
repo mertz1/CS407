@@ -205,6 +205,9 @@ function initilizeHeatMap() {
     var x = document.getElementById("testdiv2");
     x.style.display = "none";
 }
+function toggleMarkers() {
+    markers.setVisible(true);
+}
 
 function resetGlobalVars(){
     source.clear();
@@ -221,8 +224,6 @@ function resetGlobalVars(){
 //    clusters.getSource().destroyFeatures();
   //  markers.getSource().destroyFeatures();
     if (ifheatmapinit == 1) {
-        console.log(heatmapSource);
-        console.log('differ');
         heatmapSource.getSource().clear();
         map.removeLayer(heatmapSource);
         //heatmapSource.length = 0;

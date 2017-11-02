@@ -167,6 +167,7 @@ function submitForm() {
                 initilizeHeatMap();
             } else {
                 getAllFeatures();
+                toggleMarkers();
             }
         },
         error: function(data) {
