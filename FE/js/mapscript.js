@@ -57,7 +57,6 @@ function RequestPoints(request) {
 //example function of retreving points from ajax call
 function plotmap(points, type) {
     //loop through whole list  
-    map.getLayers().item(2).getSource().clear();
     for (var i = 0; i < points.count; i++) {
         //date is in a format of YYYY-MM-DD, string editing might needed
         if (type == "crime") {
@@ -75,6 +74,7 @@ var features = [];
 // add all features to source
 function getAllFeatures() {
     source.addFeatures(features);
+    clusters.setVisible(false);
 }
 
 // clusters design
@@ -187,32 +187,59 @@ var heatmapSource = new ol.layer.Heatmap({
     source: clusterSource
 });
 
+//global variable for heat map
+ifheatmapinit = 0;
 // add heat map layer to map
 function initilizeHeatMap() {
     map.addLayer(heatmapSource);
     heatmapSource.getSource().on('addfeature', function(event) {
         event.feature.set('weight', event.feature.length);
     });
+    heatmapSource.setVisible(true);
+    markers.setVisible(false);
+    clusters.setVisible(false);
+    ifheatmapinit = 1;
+    var x = document.getElementById("testdiv2");
+    x.style.display = "none";
 }
 
+function resetGlobalVars(){
+    source.clear();
+    var features1 = clusters.getSource().getFeatures();
+    features1.forEach((feature) => {
+        clusters.getSource().removeFeature(feature);
+    });
+    var features2 = markers.getSource().getFeatures();
+    features2.forEach((feature) => {
+        markers.getSource().removeFeature(feature);
+    })
+    clusters.getSource().clear();
+    markers.getSource().clear();
+//    clusters.getSource().destroyFeatures();
+  //  markers.getSource().destroyFeatures();
+    if (ifheatmapinit == 1) {
+        console.log(heatmapSource);
+        console.log('differ');
+        heatmapSource.getSource().clear();
+        map.removeLayer(heatmapSource);
+        //heatmapSource.length = 0;
+        ifheatmapinit = 0;
+    }
+}
 // defines a namespace for the application
 window.app = {};
 var app = window.app;
-// global variable to reset heatmap and clusters
-var hasHeatMap = 0;
-var hasClusters = 0;
+
 // defines custom toolbar control
 app.CustomToolbar = function(opt_options) {
     var options = opt_options || {};
     // create two buttons for satellite and clusters
     var button = document.createElement('button');
     var button1 = document.createElement('button');
-    var button2 = document.createElement('button');
     var button3 = document.createElement('button');
     // satellite button icon and cluster button icon
     button.innerHTML = '<img src="../img/WechatIMG7.jpeg" width="18" height="18"/>';
     button1.innerHTML = 'C';
-    button2.innerHTML = 'H';
     button3.innerHTML = 'I';
 
     var this_ = this;
@@ -233,32 +260,13 @@ app.CustomToolbar = function(opt_options) {
     var canyouseecluster = 0;
     var clustersView = function(e) {
         if (canyouseecluster == 0) {
-            if (hasClusters == 0) {
-                hasClusters = 1;
-                getAllFeatures();
-            }
             clusters.setVisible(true);
             markers.setVisible(false);
             canyouseecluster = 1;
-            if (hasHeatMap == 0) {
-                hasHeatMap = 1;
-                initilizeHeatMap();
-            }
         } else if (canyouseecluster == 1) {
             clusters.setVisible(false);
             markers.setVisible(true);
             canyouseecluster = 0;
-        }
-    };
-
-    var canyouseeheatmap = 0;
-    var heatMapView = function(e) {
-        if (canyouseeheatmap == 0) {
-            canyouseeheatmap = 1;
-            heatmapSource.setVisible(true);
-        } else if (canyouseeheatmap == 1) {
-            canyouseeheatmap = 0;
-            heatmapSource.setVisible(false);
         }
     };
     var toggleOverlay = 0;
@@ -278,8 +286,6 @@ app.CustomToolbar = function(opt_options) {
     button.addEventListener('touchstart', handleSatellite, false);
     button1.addEventListener('click', clustersView, false);
     button1.addEventListener('touchstart', clustersView, false);
-    button2.addEventListener('click', heatMapView, false);
-    button2.addEventListener('touchstart', heatMapView, false);
     button3.addEventListener('click', info, false);
     button3.addEventListener('touchstart', info, false);
     var element = document.createElement('div');
@@ -290,7 +296,6 @@ app.CustomToolbar = function(opt_options) {
     element.className = 'ol-unselectable ol-mycontrol';
     element.appendChild(button);
     element2.appendChild(button1);
-    element.appendChild(button2);
     element.appendChild(button3);
 
     // button painted over the map
@@ -353,7 +358,7 @@ var map = new ol.Map({
             return evt.type == 'pointermove' ||
                 evt.type == 'singleclick';
         },
-        style: selectStyleFunction
+        //style: selectStyleFunction
     })]),
     view: new ol.View({
         center: ol.proj.fromLonLat([-87.65, 41.88]), // centered in downtown chicago
@@ -369,23 +374,30 @@ function changeProjection() {
     var zoomLevel = map.getView().getZoom();
     var x = document.getElementById("testdiv2");
     // see if zoom level is less than 12
-    if (zoomLevel >= 17) { // when you can see building numbers
-        clusters.setVisible(false);
-        markers.setVisible(true);
-        x.style.display = "none";
+    if (zoomLevel >= 15) { // when you can see building numbers
+        if (ifheatmapinit == 0) {
+            clusters.setVisible(false);
+            markers.setVisible(true);
+            x.style.display = "none";
+        }
         //getCurrentCenterAndRadius();
 
-    } else if (zoomLevel > 12 && zoomLevel < 17 ) {
+    } else if (zoomLevel > 12 && zoomLevel < 15 ) {
         // you can choose to see it in clusters
         // activate and deactivate clusters button
         //button2.setVisible(true);
         x.style.display = "block";
+        if (ifheatmapinit == 1) {
+            x.style.display ="none";
+        }
         //getCurrentCenterAndRadius();
     } else if (zoomLevel <= 12) { // too zoomed out
         // just look at it in clusters
-        clusters.setVisible(true);
-        markers.setVisible(false);
-        x.style.display = "none";
+        if (ifheatmapinit == 0) {
+            clusters.setVisible(true);
+            markers.setVisible(false);
+            x.style.display = "none";
+        }
         //getCurrentCenterAndRadius();
     }
 }

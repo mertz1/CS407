@@ -1,5 +1,4 @@
 //var service = "http://localhost:50295/CivilMapService.svc/";
-
 var service = "http://civilmaptestservice.cloudapp.net/CivilMapService.svc/";
 
 $(function() {
@@ -89,6 +88,7 @@ function getBeat() {
 
 
 function submitForm() {
+    resetGlobalVars();
     var form = document.getElementById("form").elements;
     var days = Number(form.days.value);
 
@@ -129,6 +129,9 @@ function submitForm() {
         }
     }
 
+
+
+
     var map_info = {
         'date_start': date[0],
         'date_end': date[1],
@@ -157,6 +160,14 @@ function submitForm() {
             //call your function for map render as a callback function of succeed action, example:  
             console.log(points);
             plotmap(points, request2);
+                // get heatmap dropdown selection by id
+            var hm = document.getElementById("isHeatmap");
+            if (hm.options[hm.selectedIndex].value == "heatmap") {
+                getAllFeatures();
+                initilizeHeatMap();
+            } else {
+                getAllFeatures();
+            }
         },
         error: function(data) {
             if (data.d["error"] !== 'undefined') {
@@ -166,17 +177,21 @@ function submitForm() {
             }
         }
     });
+
     //Clear all previous result;
-    document.getElementById("form").reset();
+    //document.getElementById("form").reset(); // this causes a bug, do not uncomment
+
     resetRequest();
 }
 
+/*
 //example function of retreving points from ajax call
 function plotmap(points, type) {
     //loop through whole list  
     console.log(type);
+    console.log(map.getLayers().items(2));
+    console.log(map.getLayers().items(3));
 
-    map.getLayers().item(2).getSource().clear();
     for (var i = 0; i < points.count; i++) {
         console.log(points[i]);
         //date is in a format of YYYY-MM-DD, string editing might needed
@@ -243,7 +258,7 @@ function addMarker2(lon, lat, time) {
         })
     ]);
     map.getLayers().item(2).getSource().addFeature(feature);
-}
+}*/
 
 function logout() {
     document.getElementById("form").reset();
