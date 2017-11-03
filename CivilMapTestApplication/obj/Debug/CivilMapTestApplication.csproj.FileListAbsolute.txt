@@ -12,3 +12,12 @@ C:\Users\zhan1803\source\repos\CS407\CivilMapTestApplication\obj\Debug\CivilMapT
 C:\Users\zhan1803\source\repos\CS407\CivilMapTestApplication\obj\Debug\CivilMapTestApplication.csproj.CoreCompileInputs.cache
 C:\Users\zhan1803\source\repos\CS407\CivilMapTestApplication\obj\Debug\CivilMapTestApplication.exe
 C:\Users\zhan1803\source\repos\CS407\CivilMapTestApplication\obj\Debug\CivilMapTestApplication.pdb
+C:\Users\zhan1803\source\repos\CS407\CivilMapTestApplication\bin\Debug\CivilMapRESTApi.dll
+C:\Users\zhan1803\source\repos\CS407\CivilMapTestApplication\bin\Debug\System.Web.Http.dll
+C:\Users\zhan1803\source\repos\CS407\CivilMapTestApplication\bin\Debug\System.Web.Http.WebHost.dll
+C:\Users\zhan1803\source\repos\CS407\CivilMapTestApplication\bin\Debug\System.Net.Http.Formatting.dll
+C:\Users\zhan1803\source\repos\CS407\CivilMapTestApplication\bin\Debug\CivilMapRESTApi.pdb
+C:\Users\zhan1803\source\repos\CS407\CivilMapTestApplication\bin\Debug\CivilMapRESTApi.dll.config
+C:\Users\zhan1803\source\repos\CS407\CivilMapTestApplication\bin\Debug\System.Web.Http.xml
+C:\Users\zhan1803\source\repos\CS407\CivilMapTestApplication\bin\Debug\System.Web.Http.WebHost.xml
+C:\Users\zhan1803\source\repos\CS407\CivilMapTestApplication\bin\Debug\System.Net.Http.Formatting.xml

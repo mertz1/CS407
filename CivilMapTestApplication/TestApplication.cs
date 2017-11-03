@@ -34,7 +34,7 @@ namespace CivilMapTestApplication
 
             try
             {
-                int task = 12;
+                int task = 0;
 
                 switch (task)
                 {

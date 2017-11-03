@@ -32,8 +32,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\CivilMapSQLDatabase\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\CivilMapSQLDatabase\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,15 +49,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CheckAuthorization.cs" />
+    <Compile Include="Authorization.cs" />
+    <Compile Include="HttpClient.cs" />
+    <Compile Include="ModelPreparation.cs" />
+    <Compile Include="RESTModels.cs" />
     <Compile Include="TestApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestModels.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CivilMapRESTApi\CivilMapRESTApi\CivilMapRESTApi.csproj">
+      <Project>{d500fcb6-cb08-4fcd-98cb-584e041abad6}</Project>
+      <Name>CivilMapRESTApi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CivilMapSQLDatabase\CivilMapSQLDatabase\CivilMapSQLDatabase.csproj">
       <Project>{ec4fbd7a-a591-40dc-8ce3-eafd357c3a2b}</Project>
       <Name>CivilMapSQLDatabase</Name>
