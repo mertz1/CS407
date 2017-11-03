@@ -185,7 +185,9 @@ function submitForm() {
     resetRequest();
 }
 
-function submitRadiusAndCenter() {
+function submitRadiusAndCenter(longtiude, latitude) {
+    console.log(longitude);
+    console.log(latitude);
     resetGlobalVars(); // reset for new map plotting
     var latitude = -87.628567; // variable to get latitude of center // change this to yours!
     var longitude = 41.871547; // variable to get longitude of center // change this to yours!

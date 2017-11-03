@@ -508,6 +508,8 @@ var popup = new ol.Overlay({
 });
 map.addOverlay(popup);
 
+var globallong;
+var globallat;
 // display popup on click
 map.on('click', function(evt) {
 
@@ -522,13 +524,16 @@ map.on('click', function(evt) {
         $(element).attr('data-placement', 'middle');
         $(element).attr('data-html', true);
         $(element).attr('data-content', "Longitude:" + feature.get('longitude') + " Latitude:" + feature.get('latitude') + " Time: " + feature.get('tim'));
-
+        globallong = feature.get('longitude');
+        globallat = feature.get('latitude');
+        console.log(globallong);
+        console.log(globallat);
+        submitRadiusAndCenter(globallong, globallat);
         $(element).popover('show');
     } else { // if it is not a feature when clicked 
         $(element).popover('destroy');
     }
 });
-
 
 
 //export pdf
