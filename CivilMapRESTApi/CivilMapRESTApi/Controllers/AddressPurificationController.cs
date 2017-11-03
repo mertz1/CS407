@@ -382,6 +382,7 @@ namespace CivilMapRESTApi.Controllers
         [Route("api/addressPurification/validateAddress/{streetNumber}/{street}/{city}/{zipcode}")]
         public HttpResponseMessage ValidateAddress(string streetNumber, string street, string city, string zipcode)
         {
+            
             using (AddressPurification addressPurification = new AddressPurification())
             {
                 HttpResponseMessage response;
@@ -397,7 +398,7 @@ namespace CivilMapRESTApi.Controllers
                             Zipcode = zipcode
                         }
                     };
-                    addressPurification.ValidateAddress(item);
+                    addressPurification.ValidateAddress(item); 
                     response = Request.CreateResponse(HttpStatusCode.OK, item);
                 }
                 catch (Exception ex)
@@ -409,7 +410,30 @@ namespace CivilMapRESTApi.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("api/addressPurification/validate100Addresses")]
+        public HttpResponseMessage Validate100Addresses()
+        {
+                        Console.WriteLine("API CALL");
 
+            using (AddressPurification addressPurification = new AddressPurification())
+            {
+                HttpResponseMessage response;
+                try
+                {
+                    addressPurification.Validate100Addresses();
+                    response = Request.CreateResponse(HttpStatusCode.OK, item);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error: " + ex.Message);
+                    response = Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message);
+                }
+                return response;
+            }
+        }
+
+        
         public AddressRESTModel ConvertAddressModelToRESTModel(CivilMapSQLDatabaseConnection.AddressModel addressModel)
         {
             AddressRESTModel addressRESTModel = new AddressRESTModel
