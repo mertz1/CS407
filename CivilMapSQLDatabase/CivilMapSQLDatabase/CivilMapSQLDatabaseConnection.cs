@@ -27,7 +27,7 @@ namespace CivilMapSQLDatabase
             var lon = -87.743611;
             var lat = 41.116365;
             var rad = 2;
-            visualizationDataAggregation.SelectCivilMapPurifiedAddress(lon, lat, rad);
+            //visualizationDataAggregation.SelectCivilMapPurifiedAddress(lon, lat, rad);
 
 
             //crimeAndArrestDataRetrieve.GetCivilMapCrime();
@@ -43,6 +43,10 @@ namespace CivilMapSQLDatabase
             //addressPurification.GetCivilMapPurifiedAddress();
             //addressPurification.GetCivilMapNonPurifiedAddress();
             //addressPurification.GetCivilMapPoints();
+            Debug.WriteLine("Before");
+            addressPurification.Validate100Addresses();
+
+            Debug.WriteLine("AFter");
 
             //addressPurification.SelectCivilMapPurifiedAddress("cf4ac28b-d847-45f5-849c-15a7e6820227", "hah", Convert.ToDecimal(125.36), Convert.ToDecimal(468.25));
             //addressPurification.SelectCivilMapNonPurifiedAddress(125568, "din", "cf4ac28b-d847-45f5-849c-15a7e6820227");

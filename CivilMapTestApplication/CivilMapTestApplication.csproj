@@ -32,8 +32,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,19 +48,180 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CheckAuthorization.cs" />
+    <Compile Include="Authorization.cs" />
+    <Compile Include="HttpClient.cs" />
+    <Compile Include="ModelPreparation.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+    <Compile Include="obj\Release\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+    <Compile Include="obj\Release\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+    <Compile Include="obj\Release\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+    <Compile Include="RESTModels.cs" />
     <Compile Include="TestApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestModels.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="bin\Debug\.vs\CivilMapTestApplication\v15\.suo" />
+    <None Include="bin\Debug\.vs\CivilMapTestApplication\v15\sqlite3\storage.ide" />
+    <None Include="bin\Debug\.vs\config\applicationhost.config" />
+    <None Include="bin\Debug\CivilMapSQLDatabase.exe.config" />
+    <None Include="bin\Debug\CivilMapTestApplication.exe.config" />
+    <None Include="bin\Debug\packages\Microsoft.AspNet.WebApi.5.2.3\Microsoft.AspNet.WebApi.5.2.3.nupkg" />
+    <None Include="bin\Debug\packages\Microsoft.AspNet.WebApi.Client.5.2.3\Microsoft.AspNet.WebApi.Client.5.2.3.nupkg" />
+    <None Include="bin\Debug\packages\Microsoft.AspNet.WebApi.Core.5.2.3\Content\web.config.transform" />
+    <None Include="bin\Debug\packages\Microsoft.AspNet.WebApi.Core.5.2.3\Microsoft.AspNet.WebApi.Core.5.2.3.nupkg" />
+    <None Include="bin\Debug\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\Microsoft.AspNet.WebApi.WebHost.5.2.3.nupkg" />
+    <None Include="bin\Debug\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.5\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" />
+    <None Include="bin\Debug\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.5\content\net45\web.config.install.xdt" />
+    <None Include="bin\Debug\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.5\content\net45\web.config.uninstall.xdt" />
+    <None Include="bin\Debug\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.5\content\net46\web.config.install.xdt" />
+    <None Include="bin\Debug\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.5\content\net46\web.config.uninstall.xdt" />
+    <None Include="bin\Debug\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.5\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.5.nupkg" />
+    <None Include="bin\Debug\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.5\tools\net45\install.ps1" />
+    <None Include="bin\Debug\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.5\tools\net45\uninstall.ps1" />
+    <None Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props" />
+    <None Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\Microsoft.Net.Compilers.2.1.0.nupkg" />
+    <None Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\ThirdPartyNotices.rtf" />
+    <None Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\csc.exe.config" />
+    <None Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\csc.rsp" />
+    <None Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\csi.exe.config" />
+    <None Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\csi.rsp" />
+    <None Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\Microsoft.CSharp.Core.targets" />
+    <None Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\Microsoft.VisualBasic.Core.targets" />
+    <None Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\vbc.exe.config" />
+    <None Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\vbc.rsp" />
+    <None Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\VBCSCompiler.exe.config" />
+    <None Include="bin\Debug\packages\Newtonsoft.Json.6.0.4\Newtonsoft.Json.6.0.4.nupkg" />
+    <None Include="bin\Debug\packages\Newtonsoft.Json.6.0.4\tools\install.ps1" />
+    <None Include="bin\Debug\packages\RestSharp.105.2.3\RestSharp.105.2.3.nupkg" />
+    <None Include="bin\Release\CivilMapSQLDatabase.exe.config" />
+    <None Include="bin\Release\CivilMapTestApplication.exe.config" />
+    <None Include="obj\Release\CivilMapTestApplication.csproj.CopyComplete" />
+    <None Include="obj\Release\CivilMapTestApplication.csproj.CoreCompileInputs.cache" />
+    <None Include="obj\Release\CivilMapTestApplication.csprojResolveAssemblyReference.cache" />
+    <None Include="obj\Release\CoreCompileInputs.cache" />
+    <None Include="obj\Release\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CivilMapSQLDatabase\CivilMapSQLDatabase\CivilMapSQLDatabase.csproj">
       <Project>{ec4fbd7a-a591-40dc-8ce3-eafd357c3a2b}</Project>
       <Name>CivilMapSQLDatabase</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\CivilMapSQLDatabase.exe" />
+    <Content Include="bin\Debug\CivilMapSQLDatabase.pdb" />
+    <Content Include="bin\Debug\CivilMapTestApplication.exe" />
+    <Content Include="bin\Debug\CivilMapTestApplication.pdb" />
+    <Content Include="bin\Debug\CivilMapTestApplication.sln" />
+    <Content Include="bin\Debug\Newtonsoft.Json.dll" />
+    <Content Include="bin\Debug\Newtonsoft.Json.xml" />
+    <Content Include="bin\Debug\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.xml" />
+    <Content Include="bin\Debug\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\portable-wp8+netcore45+net45+wp81+wpa81\System.Net.Http.Formatting.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\portable-wp8+netcore45+net45+wp81+wpa81\System.Net.Http.Formatting.xml" />
+    <Content Include="bin\Debug\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.xml" />
+    <Content Include="bin\Debug\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.xml" />
+    <Content Include="bin\Debug\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.5\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.5\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\csc.exe" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\csi.exe" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\Microsoft.Build.Tasks.CodeAnalysis.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\Microsoft.CodeAnalysis.CSharp.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\Microsoft.CodeAnalysis.CSharp.Scripting.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\Microsoft.CodeAnalysis.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\Microsoft.CodeAnalysis.Scripting.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\Microsoft.CodeAnalysis.VisualBasic.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\Microsoft.DiaSymReader.Native.amd64.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\Microsoft.DiaSymReader.Native.x86.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\Microsoft.Win32.Primitives.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.AppContext.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.Collections.Immutable.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.Console.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.Diagnostics.FileVersionInfo.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.Diagnostics.Process.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.Diagnostics.StackTrace.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.IO.Compression.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.IO.FileSystem.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.IO.FileSystem.DriveInfo.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.IO.FileSystem.Primitives.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.IO.Pipes.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.Reflection.Metadata.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.Security.AccessControl.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.Security.Claims.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.Security.Cryptography.Algorithms.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.Security.Cryptography.Encoding.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.Security.Cryptography.Primitives.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.Security.Cryptography.X509Certificates.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.Security.Principal.Windows.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.Text.Encoding.CodePages.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.Threading.Thread.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.ValueTuple.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.Xml.ReaderWriter.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.Xml.XmlDocument.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.Xml.XPath.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\System.Xml.XPath.XDocument.dll" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\vbc.exe" />
+    <Content Include="bin\Debug\packages\Microsoft.Net.Compilers.2.1.0\tools\VBCSCompiler.exe" />
+    <Content Include="bin\Debug\packages\Newtonsoft.Json.6.0.4\lib\net20\Newtonsoft.Json.dll" />
+    <Content Include="bin\Debug\packages\Newtonsoft.Json.6.0.4\lib\net20\Newtonsoft.Json.xml" />
+    <Content Include="bin\Debug\packages\Newtonsoft.Json.6.0.4\lib\net35\Newtonsoft.Json.dll" />
+    <Content Include="bin\Debug\packages\Newtonsoft.Json.6.0.4\lib\net35\Newtonsoft.Json.xml" />
+    <Content Include="bin\Debug\packages\Newtonsoft.Json.6.0.4\lib\net40\Newtonsoft.Json.dll" />
+    <Content Include="bin\Debug\packages\Newtonsoft.Json.6.0.4\lib\net40\Newtonsoft.Json.xml" />
+    <Content Include="bin\Debug\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll" />
+    <Content Include="bin\Debug\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.xml" />
+    <Content Include="bin\Debug\packages\Newtonsoft.Json.6.0.4\lib\netcore45\Newtonsoft.Json.dll" />
+    <Content Include="bin\Debug\packages\Newtonsoft.Json.6.0.4\lib\netcore45\Newtonsoft.Json.xml" />
+    <Content Include="bin\Debug\packages\Newtonsoft.Json.6.0.4\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll" />
+    <Content Include="bin\Debug\packages\Newtonsoft.Json.6.0.4\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.xml" />
+    <Content Include="bin\Debug\packages\Newtonsoft.Json.6.0.4\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll" />
+    <Content Include="bin\Debug\packages\Newtonsoft.Json.6.0.4\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.xml" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\MonoAndroid10\RestSharp.dll" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\MonoAndroid10\RestSharp.xml" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\MonoTouch10\RestSharp.dll" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\MonoTouch10\RestSharp.xml" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\net35\RestSharp.dll" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\net35\RestSharp.xml" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\net4-client\RestSharp.dll" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\net4-client\RestSharp.xml" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\net451\RestSharp.dll" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\net451\RestSharp.xml" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\net452\RestSharp.xml" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\net45\RestSharp.xml" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\net46\RestSharp.dll" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\net46\RestSharp.xml" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\net4\RestSharp.dll" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\net4\RestSharp.xml" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\sl5\RestSharp.dll" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\sl5\RestSharp.xml" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\windowsphone81\RestSharp.dll" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\windowsphone81\RestSharp.xml" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\windowsphone8\RestSharp.dll" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\windowsphone8\RestSharp.xml" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\Xamarin.iOS10\RestSharp.dll" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\lib\Xamarin.iOS10\RestSharp.xml" />
+    <Content Include="bin\Debug\packages\RestSharp.105.2.3\readme.txt" />
+    <Content Include="bin\Debug\RestSharp.dll" />
+    <Content Include="bin\Debug\RestSharp.xml" />
+    <Content Include="bin\Release\CivilMapSQLDatabase.exe" />
+    <Content Include="bin\Release\CivilMapSQLDatabase.pdb" />
+    <Content Include="bin\Release\CivilMapTestApplication.exe" />
+    <Content Include="bin\Release\CivilMapTestApplication.pdb" />
+    <Content Include="bin\Release\Newtonsoft.Json.dll" />
+    <Content Include="bin\Release\Newtonsoft.Json.xml" />
+    <Content Include="bin\Release\RestSharp.dll" />
+    <Content Include="bin\Release\RestSharp.xml" />
+    <Content Include="obj\Release\CivilMapTestApplication.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Release\CivilMapTestApplication.exe" />
+    <Content Include="obj\Release\CivilMapTestApplication.pdb" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

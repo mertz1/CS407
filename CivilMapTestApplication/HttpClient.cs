@@ -138,5 +138,12 @@ namespace CivilMapTestApplication
             HttpResponseMessage response = await client.GetAsync($"api/addressPurification/validateAddress/{streetNumber}/{street}/{city}/{zipcode}");
             return response.StatusCode;
         }
+
+        static async Task<HttpStatusCode> Validate100AddressesAsync()
+        {
+            Console.WriteLine("Async Call");
+            HttpResponseMessage response = await client.GetAsync($"api/addressPurification/validate100Addresses");
+            return response.StatusCode;
+        }
     }
 }

@@ -34,7 +34,7 @@ namespace CivilMapTestApplication
 
             try
             {
-                int task = 12;
+                int task = 13;
 
                 switch (task)
                 {
@@ -119,6 +119,10 @@ namespace CivilMapTestApplication
                         // Validate address:
                         var validate = await ValidateAddressAsync("189", "Russel St", "Chicago", "60412");
                         Debug.WriteLine("Validate address: " + validate);
+                        break;
+
+                    case 13:
+                        var validate100 = await Validate100AddressesAsync();
                         break;
                 }
             }

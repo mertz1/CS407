@@ -1,8 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace GeocodioClient
 {
+    public class BatchGeocodioResultArray
+    {
+        [JsonProperty("results")]
+        public List<BatchGeocodioResult> array { get; set; }
+    }
+
+    public class BatchGeocodioResult
+    {
+        [JsonProperty("query")]
+        public string query { get; set; }
+
+        public GeocodioResponse response { get; set; }
+    }
+
     public class GeocodioResponse
     {
         /// <summary>
