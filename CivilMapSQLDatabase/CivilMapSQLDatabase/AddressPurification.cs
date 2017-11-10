@@ -456,9 +456,8 @@ namespace CivilMapSQLDatabase
 
         public List<PurifiedAddressModel?> Validate100Addresses()
         {
-            string commandText = "select ARREST_ID, STREET_NO, STREET_NME, CITY, ZIP_CD from CivilMapArrest ORDER BY ARREST_ID OFFSET 240 ROWS FETCH NEXT 100 ROWS ONLY";
+            string commandText = "select ARREST_ID, STREET_NO, STREET_NME, CITY, ZIP_CD from CivilMapArrest ORDER BY ARREST_ID OFFSET 2610 ROWS FETCH NEXT 100 ROWS ONLY";
 
-            System.Type type;
             PurifiedAddressModel purifiedAddress = new PurifiedAddressModel();
             NonPurifiedAddressModel nonPurifiedAddress = new NonPurifiedAddressModel();
             List<String> arrests = new List<String>();
@@ -470,6 +469,7 @@ namespace CivilMapSQLDatabase
             List<String> addresses = new List<String>();
             string address;
             int fieldCount;
+            int existed = 0;
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -513,6 +513,7 @@ namespace CivilMapSQLDatabase
                 //Already Exists In Purified, Don't Validate
                 if (purifiedSelectResult.Count > 0)
                 {
+                    existed++;
                     arrests.RemoveAt(i);
                     list.RemoveAt(i);
                     continue;
@@ -523,6 +524,7 @@ namespace CivilMapSQLDatabase
                 {
                     if (nonPurifiedSelectResult[0].PurifiedAddressId != null)
                     {
+                        existed++;
                         arrests.RemoveAt(i);
                         list.RemoveAt(i);
                     }
@@ -557,6 +559,7 @@ namespace CivilMapSQLDatabase
 
             GeocodioClient.GeocodioClient geoClient = new GeocodioClient.GeocodioClient("3551a95da75a999c89a259153a77d2aa9a3d5a2");
 
+            int count = 0;
             try
             {
                 PurifiedAddressModel currentValidated = new PurifiedAddressModel();
@@ -577,10 +580,13 @@ namespace CivilMapSQLDatabase
                         UpdateCivilMapNonPurifiedAddress(updateModel);
 
                         InsertCivilMapArrestPurifiedAddress(arrests[i], newPurifiedId);
+                        count++;
                     }
 
                 }
 
+                Debug.WriteLine("Added: " + count + " addresses");
+                Debug.WriteLine("Existed Already: " + existed);
                 return validatedAddresses;
             }
             catch (Exception ex)

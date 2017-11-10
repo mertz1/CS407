@@ -1,16 +1,14 @@
 {
   "ExpandedNodes": [
     "",
-    "\\CivilMapRESTApi",
     "\\CivilMapRESTApi\\CivilMapRESTApi",
     "\\CivilMapRESTApi\\CivilMapRESTApi\\App_Start",
     "\\CivilMapRESTApi\\CivilMapRESTApi\\Controllers",
     "\\CivilMapRESTApi\\CivilMapRESTApi\\Models",
     "\\CivilMapSQLDatabase",
     "\\CivilMapSQLDatabase\\CivilMapSQLDatabase",
-    "\\CivilMapTestApplication",
-    "\\CivilMapTestApplication\\bin"
+    "\\CivilMapSQLDatabase\\CivilMapSQLDatabase\\geocodio"
   ],
-  "SelectedNode": "\\CivilMapTestApplication\\TestApplication.cs",
+  "SelectedNode": "\\CivilMapSQLDatabase\\CivilMapSQLDatabase.sln",
   "PreviewInSolutionExplorer": false
 }
