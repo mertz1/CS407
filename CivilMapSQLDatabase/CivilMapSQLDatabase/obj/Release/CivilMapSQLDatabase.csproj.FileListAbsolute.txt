@@ -1,0 +1,13 @@
+C:\Users\zhan1803\source\repos\CS407\CivilMapSQLDatabase\CivilMapSQLDatabase\bin\Release\CivilMapSQLDatabase.exe.config
+C:\Users\zhan1803\source\repos\CS407\CivilMapSQLDatabase\CivilMapSQLDatabase\bin\Release\CivilMapSQLDatabase.exe
+C:\Users\zhan1803\source\repos\CS407\CivilMapSQLDatabase\CivilMapSQLDatabase\bin\Release\CivilMapSQLDatabase.pdb
+C:\Users\zhan1803\source\repos\CS407\CivilMapSQLDatabase\CivilMapSQLDatabase\bin\Release\Newtonsoft.Json.dll
+C:\Users\zhan1803\source\repos\CS407\CivilMapSQLDatabase\CivilMapSQLDatabase\bin\Release\RestSharp.dll
+C:\Users\zhan1803\source\repos\CS407\CivilMapSQLDatabase\CivilMapSQLDatabase\bin\Release\System.Net.Http.Formatting.dll
+C:\Users\zhan1803\source\repos\CS407\CivilMapSQLDatabase\CivilMapSQLDatabase\bin\Release\Newtonsoft.Json.xml
+C:\Users\zhan1803\source\repos\CS407\CivilMapSQLDatabase\CivilMapSQLDatabase\bin\Release\RestSharp.xml
+C:\Users\zhan1803\source\repos\CS407\CivilMapSQLDatabase\CivilMapSQLDatabase\bin\Release\System.Net.Http.Formatting.xml
+C:\Users\zhan1803\source\repos\CS407\CivilMapSQLDatabase\CivilMapSQLDatabase\obj\Release\CivilMapSQLDatabase.csprojResolveAssemblyReference.cache
+C:\Users\zhan1803\source\repos\CS407\CivilMapSQLDatabase\CivilMapSQLDatabase\obj\Release\CivilMapSQLDatabase.csproj.CoreCompileInputs.cache
+C:\Users\zhan1803\source\repos\CS407\CivilMapSQLDatabase\CivilMapSQLDatabase\obj\Release\CivilMapSQLDatabase.exe
+C:\Users\zhan1803\source\repos\CS407\CivilMapSQLDatabase\CivilMapSQLDatabase\obj\Release\CivilMapSQLDatabase.pdb
