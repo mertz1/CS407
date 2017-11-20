@@ -23,6 +23,7 @@ namespace CivilMapSQLDatabase
         public struct AddressModel
         {
             public string StreetNumber;
+            public string Direction;
             public string Street;
             public string City;
             public string Zipcode;
@@ -32,6 +33,8 @@ namespace CivilMapSQLDatabase
         {
             public Guid PurifiedAddressId;   // PK
             public AddressModel AddressModel;
+            public string StreetType;
+            public string AddressType;
             public Decimal Longitude;
             public Decimal Latitude;
         };
