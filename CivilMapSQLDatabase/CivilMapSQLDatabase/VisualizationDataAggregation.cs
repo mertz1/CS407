@@ -71,14 +71,14 @@ namespace CivilMapSQLDatabase
                     }
                     connection.Close();
 
-                    //Debug.WriteLine("list length = " + list.Count());
-                    //Debug.WriteLine("min / max lon: " + minLon + " " + maxLon);
-                    //Debug.WriteLine("min / max lat: " + minLat + " " + maxLat);
+                    Debug.WriteLine("list length = " + list.Count());
+                    Debug.WriteLine("min / max lon: " + minLon + " " + maxLon);
+                    Debug.WriteLine("min / max lat: " + minLat + " " + maxLat);
 
-                    //foreach (var item in list)
-                    //{
-                    //    Debug.WriteLine("Selected lon / lat: " + item.Longitude + " " + item.Latitude);
-                    //}
+                    foreach (var item in list)
+                    {
+                        Debug.WriteLine("Selected lon / lat: " + item.Longitude + " " + item.Latitude);
+                    }
                 }
                 catch(Exception ex)
                 {

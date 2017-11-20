@@ -61,10 +61,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CivilMapRESTApi\CivilMapRESTApi\CivilMapRESTApi.csproj">
-      <Project>{d500fcb6-cb08-4fcd-98cb-584e041abad6}</Project>
-      <Name>CivilMapRESTApi</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CivilMapSQLDatabase\CivilMapSQLDatabase\CivilMapSQLDatabase.csproj">
       <Project>{ec4fbd7a-a591-40dc-8ce3-eafd357c3a2b}</Project>
       <Name>CivilMapSQLDatabase</Name>
