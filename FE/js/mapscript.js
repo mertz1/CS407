@@ -150,7 +150,7 @@ function styleFunction(feature, resolution) {
     if (size > 1) {
         style = new ol.style.Style({
             image: new ol.style.Circle({
-                radius: feature.get('radius')*5.5,
+                radius: feature.get('radius')*4,
                 fill: new ol.style.Fill({
                     color: [255, 153, 0, Math.min(0.8, 0.4 + (size/maxFeatureCount))]
                 })
@@ -388,7 +388,6 @@ function changeProjection() {
             markers.setVisible(true);
             x.style.display = "none";
         }
-        //getCurrentCenterAndRadius();
 
     } else if (zoomLevel > 12 && zoomLevel < 15 ) {
         // you can choose to see it in clusters
@@ -398,7 +397,6 @@ function changeProjection() {
         if (ifheatmapinit == 1) {
             x.style.display ="none";
         }
-        //getCurrentCenterAndRadius();
     } else if (zoomLevel <= 12) { // too zoomed out
         // just look at it in clusters
         if (ifheatmapinit == 0) {
@@ -406,7 +404,6 @@ function changeProjection() {
             markers.setVisible(false);
             x.style.display = "none";
         }
-        //getCurrentCenterAndRadius();
     }
 }
 
@@ -420,11 +417,28 @@ function getCurrentCenterAndRadius() {
     var posNE = [extent[2], extent[3]];
     center = ol.proj.transform(center, sourceProj, 'EPSG:4326');
     console.log(center);
+    console.log(center[0]);
+    console.log(center[1]);
+    long = center[0];
+    lat = center[1];
     var wgs84Sphere = new ol.Sphere(6378137);
     var centerToSW = wgs84Sphere.haversineDistance(center, posSW);
     var centerToNE = wgs84Sphere.haversineDistance(center, posNE);
     console.log(centerToNE);
-    console.log(centerToSW);
+    console.log(centerToSW);    
+    var zoomLevel = map.getView().getZoom();
+    console.log(zoomLevel);
+    if (zoomLevel > 6 && zoomLevel <= 14) {
+        radius = (((centerToSW + centerToNE)/2)/10000)+6102;
+    } else if (zoomLevel > 15) {
+
+        radius = (((centerToSW + centerToNE)/2)/10000)+6101+0.7;
+        console.log("Gos in here");
+    } else if (zoomLevel > 18 && zoomLevel <= 20) {
+        radius = (((centerToSW + centerToNE)/2)/10000)+6101+0.6;
+    }
+    console.log(radius);
+    plotByZoom(long, lat, radius);
 }
 
 // function to add crime marker
@@ -439,7 +453,21 @@ function addMarker(lon, lat, time) {
     });
     features.push(feature);
     featurecount = featurecount + 1;
+
+    var iconFont = 'font-awesome';
+    var iconFontText = '\uf276'; // equates to fa-trash icon
+    var col = '#d61337';
+
     feature.setStyle([
+        new ol.style.Style({
+        text: new ol.style.Text({
+            font: 'normal 18px FontAwesome',
+            text: iconFontText,
+            fill: new ol.style.Fill({ color: col })
+            })
+        })
+    ]);
+   /*feature.setStyle([
         new ol.style.Style({
             image: new ol.style.Icon(({
                 anchor: [0.5, 1],
@@ -451,7 +479,7 @@ function addMarker(lon, lat, time) {
 
             }))
         })
-    ]);
+    ]);*/
     map.getLayers().item(2).getSource().addFeature(feature);
     map.getLayers().item(2).getSource().changed();
 }
@@ -468,7 +496,7 @@ function addMarker2(lon, lat, time) {
     });
     features.push(feature);
     featurecount = featurecount + 1;
-    feature.setStyle([
+    /*feature.setStyle([
         new ol.style.Style({
             image: new ol.style.Icon(({
                 anchor: [0.5, 1],
@@ -480,7 +508,23 @@ function addMarker2(lon, lat, time) {
 
             }))
         })
+    ]);*/
+
+    var iconFont = 'font-awesome';
+    var iconFontText = '\uf041'; // equates to fa-trash icon
+    var iconSize = 24;
+    var col = '#259bea';
+
+    feature.setStyle([
+        new ol.style.Style({
+        text: new ol.style.Text({
+            font: 'normal 24px FontAwesome',
+            text: iconFontText,
+            fill: new ol.style.Fill({ color: col })
+            })
+        })
     ]);
+
     map.getLayers().item(2).getSource().addFeature(feature);
     //changeToCluster();
 }
@@ -510,6 +554,14 @@ map.addOverlay(popup);
 
 var globallong;
 var globallat;
+
+function getLong() {
+    return globallong;
+}
+function getLat() {
+    return globallat;
+}
+
 // display popup on click
 map.on('click', function(evt) {
 
@@ -525,15 +577,14 @@ map.on('click', function(evt) {
         $(element).attr('data-html', true);
         $(element).attr('data-content', "Longitude:" + feature.get('longitude') + " Latitude:" + feature.get('latitude') + " Time: " + feature.get('tim'));
         globallong = feature.get('longitude');
+        getRadiusAndCenter(feature.get('longitude'), feature.get('latitude'));
         globallat = feature.get('latitude');
-        console.log(globallong);
-        console.log(globallat);
-        submitRadiusAndCenter(globallong, globallat);
         $(element).popover('show');
     } else { // if it is not a feature when clicked 
         $(element).popover('destroy');
     }
 });
+
 
 
 //export pdf
