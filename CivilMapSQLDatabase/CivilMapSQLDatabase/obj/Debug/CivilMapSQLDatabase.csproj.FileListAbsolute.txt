@@ -66,3 +66,5 @@ D:\Users\Michael\Desktop\CS407\CivilMapSQLDatabase\CivilMapSQLDatabase\bin\Debug
 D:\Users\Michael\Desktop\CS407\CivilMapSQLDatabase\CivilMapSQLDatabase\bin\Debug\Newtonsoft.Json.xml
 D:\Users\Michael\Desktop\CS407\CivilMapSQLDatabase\CivilMapSQLDatabase\bin\Debug\RestSharp.xml
 D:\Users\Michael\Desktop\CS407\CivilMapSQLDatabase\CivilMapSQLDatabase\bin\Debug\System.Net.Http.Formatting.xml
+C:\Users\zhan1803\source\repos\CS407\CivilMapSQLDatabase\CivilMapSQLDatabase\obj\Debug\CivilMapSQLDatabase.csprojResolveAssemblyReference.cache
+C:\Users\zhan1803\source\repos\CS407\CivilMapSQLDatabase\CivilMapSQLDatabase\obj\Debug\CivilMapSQLDatabase.csproj.ResolveComReference.cache

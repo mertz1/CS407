@@ -93,5 +93,36 @@ namespace CivilMapSQLDatabase
             double radians = Math.PI * degree / 180.0;
             return radians;
         }
+
+        public void InsertIntoCpdBeats(List<string> objectId, List<string> district, List<string> sector, List<string> beat, List<string> beat_num)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    for (int i = 0; i < objectId.Count(); i++)
+                    {
+                        string commandText = "Insert into Cpd_Beats (ObjectId, District, Sector, Beat, Beat_Num) values " +
+                                 "(@ObjectId, @District, @Sector, @Beat, @Beat_Num)";
+                        SqlCommand command = new SqlCommand(commandText, connection);
+
+                        command.Parameters.AddWithValue("@ObjectId", objectId[i]);
+                        command.Parameters.AddWithValue("@District", district[i]);
+                        command.Parameters.AddWithValue("@Sector", sector[i]);
+                        command.Parameters.AddWithValue("@Beat", beat[i]);
+                        command.Parameters.AddWithValue("@Beat_Num", beat_num[i]);
+                        command.ExecuteNonQuery();
+                    }
+                    connection.Close();
+                    Debug.WriteLine("finished!");
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error: " + ex.Message);
+                }
+            }
+        }
     }
 }
