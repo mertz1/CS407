@@ -34,7 +34,7 @@ namespace CivilMapTestApplication
 
             try
             {
-                int task = 13;
+                int task = 6;
 
                 switch (task)
                 {
@@ -46,7 +46,7 @@ namespace CivilMapTestApplication
 
                     case 1:
                         // select Purified Address
-                        var selectPurifiedAddress = await SelectPurifiedAddressAsync("42", "HICKS underground", "Chicago", "60412");
+                        var selectPurifiedAddress = await SelectPurifiedAddressAsync("42", "", "HICKS underground", "Chicago", "60412");
                         Debug.WriteLine("Select purified address #: " + selectPurifiedAddress.Count());
                         break;
 
@@ -102,26 +102,19 @@ namespace CivilMapTestApplication
                         break;
 
                     case 10:
-                        // add Validation Non Purified Address:
-                        NonPurifiedAddressRESTModel validateNonPurifiedAddress = CreateNonPurifiedAddressRESTModel();
-                        var addValidate = await AddValidationNonPurifiedAddressAsync(validateNonPurifiedAddress);
-                        Debug.WriteLine("Add validate non purified address: " + addValidate);
-                        break;
-
-                    case 11:
                         // Update non purified address:
                         NonPurifiedAddressRESTModel update = CreateNonPurifiedAddressForUpdate();
                         var updateNonPurifiedAddress = await UpdateNonPurifiedAddressAsync("18094643-16dc-4a48-b661-4e72f5ed8149", update);
                         Debug.WriteLine("Update non purified address: " + updateNonPurifiedAddress);
                         break;
 
-                    case 12:
+                    case 11:
                         // Validate address:
                         var validate = await ValidateAddressAsync("189", "Russel St", "Chicago", "60412");
                         Debug.WriteLine("Validate address: " + validate);
                         break;
 
-                    case 13:
+                    case 12:
                         var validate100 = await Validate100AddressesAsync();
                         break;
                 }

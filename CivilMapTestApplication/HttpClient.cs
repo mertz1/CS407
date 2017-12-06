@@ -24,10 +24,10 @@ namespace CivilMapTestApplication
             return purifiedAddress;
         }
 
-        static async Task<List<PurifiedAddressRESTModel>> SelectPurifiedAddressAsync(string streetNumber, string street, string city, string zipcode)
+        static async Task<List<PurifiedAddressRESTModel>> SelectPurifiedAddressAsync(string streetNumber, string direction, string street, string city, string zipcode)
         {
             List<PurifiedAddressRESTModel> purifiedAddress = null;
-            HttpResponseMessage response = await client.GetAsync($"api/addressPurification/selectCivilMapPurifiedAddress/{streetNumber}/{street}/{city}/{zipcode}");
+            HttpResponseMessage response = await client.GetAsync($"api/addressPurification/selectCivilMapPurifiedAddress/{streetNumber}/{direction}/{street}/{city}/{zipcode}");
 
             if (response.IsSuccessStatusCode)
                 purifiedAddress = await response.Content.ReadAsAsync<List<PurifiedAddressRESTModel>>();
@@ -115,15 +115,7 @@ namespace CivilMapTestApplication
 
             return response.Headers.Location;
         }
-
-        static async Task<Uri> AddValidationNonPurifiedAddressAsync(NonPurifiedAddressRESTModel model)
-        {
-            HttpResponseMessage response = await client.PostAsJsonAsync("api/addressPurification/addValidationCivilMapNonPurifiedAddress", model);
-            response.EnsureSuccessStatusCode();
-
-            return response.Headers.Location;
-        }
-
+        
         static async Task<NonPurifiedAddressRESTModel> UpdateNonPurifiedAddressAsync(string id, NonPurifiedAddressRESTModel model)
         {
             HttpResponseMessage response = await client.PutAsJsonAsync($"api/addressPurification/updateCivilMapNonPurifiedAddress/{id}", model);

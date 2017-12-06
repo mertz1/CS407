@@ -15,12 +15,16 @@ namespace CivilMapTestApplication
                 AddressRESTModel = new AddressRESTModel
                 {
                     StreetNumber = "49",
+                    Direction = "",
                     Street = "Wall St",
                     City = "Chicago",
                     Zipcode = "60606"
                 },
+                StreetType = "AVE",
+                AddressType = "Interaction",
                 Longitude = Convert.ToDecimal(-87.761326),
-                Latitude = Convert.ToDecimal(41.117596)
+                Latitude = Convert.ToDecimal(41.117596),
+                Polygon = "31125"
             };
             return model;
         }
@@ -32,6 +36,7 @@ namespace CivilMapTestApplication
                 AddressRESTModel = new AddressRESTModel
                 {
                     StreetNumber = "250",
+                    Direction = "",
                     Street = "Baker St",
                     City = "Chicago",
                     Zipcode = "60215"
@@ -49,6 +54,7 @@ namespace CivilMapTestApplication
                 AddressRESTModel = new AddressRESTModel
                 {
                     StreetNumber = "120", 
+                    Direction = "",
                     Street = "North Michigan Avenue",
                     City = "Chicago",
                     Zipcode = "60123"
