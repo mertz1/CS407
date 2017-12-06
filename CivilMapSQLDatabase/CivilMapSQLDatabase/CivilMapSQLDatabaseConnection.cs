@@ -26,6 +26,8 @@ namespace CivilMapSQLDatabase
             //list = addressPurification.SelectCrimeAddressPolygon();
             //addressPurification.UpdateCivilMapPurifiedAddressOnPolygons(list);
 
+            InsertTestArrest();
+
             //var address = new PurifiedAddressModel();
             //address.AddressModel.Street = "Waldron Street";
             //address.AddressModel.StreetNumber = "417";
@@ -123,8 +125,8 @@ namespace CivilMapSQLDatabase
 
             for (int i = 0; i < model.Count(); i++)
             {
-                xlWorkSheet.Cells[i + 1, 3] = model[i].Longitude;
-                xlWorkSheet.Cells[i + 1, 4] = model[i].Latitude;
+                xlWorkSheet.Cells[i + 1, 2] = model[i].Longitude;
+                xlWorkSheet.Cells[i + 1, 3] = model[i].Latitude;
             }
 
             xlWorkBook.SaveAs(@"C:\Users\zhan1803\Desktop\newFakeData.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
@@ -141,23 +143,19 @@ namespace CivilMapSQLDatabase
             string connectionString = "Data Source=tcp:civilmapdb.database.windows.net,1433;Initial Catalog=civilmapdb-dev;Persist Security Info=False;User ID=civilmapuser;Password=M#apitright95;Connect Timeout=30;Encrypt=True";
 
             Excel.Application xlApp = new Excel.Application();
-            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(@"C:\Users\zhan1803\Desktop\ArrestFakeData.xls");
+            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(@"C:\Users\zhan1803\Desktop\newFakeData.xls");
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
             Excel.Range xlRange = xlWorksheet.UsedRange;
 
-            List<string> id = new List<string>();
-            List<DateTime> date = new List<DateTime>();
+            List<int> sectionId = new List<int>();
             List<string> longitude = new List<string>();
             List<string> latitude = new List<string>();
-            List<string> beat = new List<string>();
 
-            for (int i = 1; i <= 704; i++)
+            for (int i = 1; i <= 100; i++)
             {
-                id.Add(xlRange.Cells[i, 1].Value2.ToString()); 
-                date.Add(DateTime.FromOADate(xlRange.Cells[i, 2].Value2));
-                longitude.Add(xlRange.Cells[i, 3].Value2.ToString());
-                latitude.Add(xlRange.Cells[i, 4].Value2.ToString());
-                beat.Add(xlRange.Cells[i, 5].Value2.ToString());
+                sectionId.Add(Convert.ToInt32(xlRange.Cells[i, 1].Value2.ToString())); 
+                longitude.Add(xlRange.Cells[i, 2].Value2.ToString());
+                latitude.Add(xlRange.Cells[i, 3].Value2.ToString());
             }
             xlApp.Quit();
 
@@ -172,17 +170,15 @@ namespace CivilMapSQLDatabase
                 {
                     connection.Open();
 
-                    for (int i = 0; i < id.Count(); i++)
+                    for (int i = 0; i < sectionId.Count(); i++)
                     {
-                        string commandText = "Insert into TestCrime (Id, Date, Longitude, Latitude, Beat) values " +
-                                 "(@Id, @Date, @Longitude, @Latitude, @Beat)";
+                        string commandText = "Insert into CivilMapCustomizedHeatMap (SectionId, Longitude, Latitude) values " +
+                                 "(@SectionId, @Longitude, @Latitude)";
                         SqlCommand command = new SqlCommand(commandText, connection);
 
-                        command.Parameters.AddWithValue("@Id", id[i]);
-                        command.Parameters.AddWithValue("@Date", date[i]);
+                        command.Parameters.AddWithValue("@SectionId", sectionId[i]);
                         command.Parameters.AddWithValue("@Longitude", longitude[i]);
                         command.Parameters.AddWithValue("@Latitude", latitude[i]);
-                        command.Parameters.AddWithValue("@Beat", beat[i]);
                         command.ExecuteNonQuery();
                     }
                     connection.Close();
