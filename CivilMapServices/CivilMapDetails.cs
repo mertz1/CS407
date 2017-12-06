@@ -52,6 +52,38 @@ namespace CivilMapServices
         [DataMemberAttribute()]
         public double center_latitude;
     }
+
+    [DataContractAttribute()]
+    public class UploadedPoints
+    {
+        [DataMember(Order = 0, IsRequired = true)]
+        public List<CustomizedPoint> points { get; set; }
+    }
+
+    [DataContract]
+    public class CustomizedPoint {
+        [DataMember]
+        public string longitude { get; set; }
+        [DataMember]
+        public string latitude { get; set; }
+    }
+
+    [DataContractAttribute()]
+    public class Polygon
+    {
+        [DataMemberAttribute()]
+        public string type;
+        [DataMemberAttribute()]
+        public string option;
+        [DataMemberAttribute()]
+        public string area;
+        [DataMemberAttribute()]
+        public string district;
+        [DataMemberAttribute()]
+        public string sector;
+        [DataMemberAttribute()]
+        public string beat;
+    }
     /* ------------------------------Response Model------------------------------ */
     public class TokenValidationStatus
     {     
