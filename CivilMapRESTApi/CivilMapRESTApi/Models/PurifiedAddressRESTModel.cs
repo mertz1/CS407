@@ -10,7 +10,10 @@ namespace CivilMapRESTApi.Models
     {
         public string PurifiedAddressId { get; set; }
         public AddressRESTModel AddressRESTModel { get; set; }
+        public string StreetType { get; set; }
+        public string AddressType { get; set; }
         public Decimal Longitude { get; set; }
         public Decimal Latitude { get; set; }
+        public string Polygon { get; set; }
     }
 }
