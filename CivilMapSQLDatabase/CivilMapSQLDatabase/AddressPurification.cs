@@ -65,6 +65,35 @@ namespace CivilMapSQLDatabase
             }
         }
 
+
+        public List<Guid> GetCivilMapPurifiedAddress_Id()
+        {
+            string commandText = "select PurifiedAddressId from CivilMapPurifiedAddress";
+            var list = new List<Guid>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand command = new SqlCommand(commandText, connection);
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        list.Add(reader.GetGuid(0));
+                    }
+                    connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error: " + ex.Message);
+                }
+                return list;
+            }
+        }
+
+
         public List<PurifiedAddressModel> GetCivilMapPurifiedAddress()
         {
             string commandText = "select * from CivilMapPurifiedAddress";
@@ -152,6 +181,41 @@ namespace CivilMapSQLDatabase
                 return list;
             }
         }
+
+
+        public List<Guid> SelectCivilMapPurifiedAddress_Id(PurifiedAddressModel model)
+        {
+            string commandText = "select PurifiedAddressId from CivilMapPurifiedAddress where " +
+                                 "StreetNumber = @StreetNumber and Direction = @Direction and Street = @Street and City like @City and Zipcode = @Zipcode";
+            var list = new List<Guid>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand command = new SqlCommand(commandText, connection);
+                    connection.Open();
+                    command.Parameters.AddWithValue("@StreetNumber", model.AddressModel.StreetNumber);
+                    command.Parameters.AddWithValue("@Direction", model.AddressModel.Direction ?? "");
+                    command.Parameters.AddWithValue("@Street", (model.AddressModel.Street).ToString());
+                    command.Parameters.AddWithValue("@City", (model.AddressModel.City).ToString());
+                    command.Parameters.AddWithValue("@Zipcode", model.AddressModel.Zipcode ?? "");
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        list.Add(reader.GetGuid(0));
+                    }
+                    connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error: " + ex.Message);
+                }
+                return list;
+            }
+        }
+
 
         public List<PurifiedAddressModel> SelectCivilMapPurifiedAddress(PurifiedAddressModel model)
         {

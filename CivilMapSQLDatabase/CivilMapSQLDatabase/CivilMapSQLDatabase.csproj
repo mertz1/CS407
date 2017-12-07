@@ -55,6 +55,7 @@
     <Compile Include="AddressPurification.cs" />
     <Compile Include="CivilMapSQLDatabaseConnection.cs" />
     <Compile Include="CrimeAndArrestDataRetrieve.cs" />
+    <Compile Include="DataExport.cs" />
     <Compile Include="DBModels.cs" />
     <Compile Include="geocodio\GeocodioClient.cs" />
     <Compile Include="geocodio\GeocodioResponse.cs" />
