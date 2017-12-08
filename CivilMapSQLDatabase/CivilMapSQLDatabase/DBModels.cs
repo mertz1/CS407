@@ -25,7 +25,9 @@ namespace CivilMapSQLDatabase
             public string StreetNumber;
             public string Direction;
             public string Street;
+            public string StreetType;
             public string City;
+            public string State;
             public string Zipcode;
         };
 
@@ -33,11 +35,12 @@ namespace CivilMapSQLDatabase
         {
             public Guid PurifiedAddressId;   // PK
             public AddressModel AddressModel;
-            public string StreetType;
             public string AddressType;
             public Decimal Longitude;
             public Decimal Latitude;
             public string Polygon;
+
+            public string StreetType { get; set; }
         };
 
         public struct NonPurifiedAddressModel
@@ -61,7 +64,7 @@ namespace CivilMapSQLDatabase
         public struct CivilMapCrimeArrestModel
         {
             public string Id;   // PK
-            public DateTime? Date;
+            public object Date;
             public decimal? Longitude;
             public decimal? Latitude;
             public string Beat;

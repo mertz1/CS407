@@ -18,9 +18,10 @@ namespace CivilMapTestApplication
                     Direction = "",
                     Street = "Wall St",
                     City = "Chicago",
+                    StreetType = "AVE",
                     Zipcode = "60606"
                 },
-                StreetType = "AVE",
+
                 AddressType = "Interaction",
                 Longitude = Convert.ToDecimal(-87.761326),
                 Latitude = Convert.ToDecimal(41.117596),

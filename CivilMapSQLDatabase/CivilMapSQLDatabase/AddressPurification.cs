@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Globalization;
+using System.Data.SqlTypes;
 
 namespace CivilMapSQLDatabase
 {
@@ -27,7 +28,8 @@ namespace CivilMapSQLDatabase
                                  "[AddressType] NVARCHAR (384) NULL," +
                                  "[Longitude] DECIMAL(9, 6) NOT NULL," +
                                  "[Latitude] DECIMAL(9, 6) NOT NULL," +
-                                 "[Polygon] NVARCHAR(5) NULL, " + 
+                                 "[Polygon] NVARCHAR(5) NULL, " +
+                                 "[State] NVARCHAR (384) NULL," +
                                  "PRIMARY KEY CLUSTERED([PurifiedAddressId] ASC))";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -38,8 +40,8 @@ namespace CivilMapSQLDatabase
                     connection.Open();
                     command.ExecuteNonQuery();
 
-                    commandText = "Insert into CivilMapPurifiedAddress (StreetNumber, Direction, Street, City, Zipcode, StreetType, AddressType, Longitude, Latitude, Polygon) output INSERTED.PurifiedAddressId values " +
-                                  "(@StreetNumber, @Direction, @Street, @City, @Zipcode, @StreetType, @AddressType, @Longitude, @Latitude, @Polygon)";
+                    commandText = "Insert into CivilMapPurifiedAddress (StreetNumber, Direction, Street, City, StreetType, Zipcode, AddressType, Longitude, Latitude, Polygon) output INSERTED.PurifiedAddressId values " +
+                                  "(@StreetNumber, @Direction, @Street, @City, @StreetType, @Zipcode, @AddressType, @Longitude, @Latitude, @Polygon)";
                     command = new SqlCommand(commandText, connection);
 
                     command.Parameters.AddWithValue("@StreetNumber", model.AddressModel.StreetNumber);
@@ -47,7 +49,7 @@ namespace CivilMapSQLDatabase
                     command.Parameters.AddWithValue("@Street", model.AddressModel.Street);
                     command.Parameters.AddWithValue("@City", model.AddressModel.City);
                     command.Parameters.AddWithValue("@Zipcode", model.AddressModel.Zipcode);
-                    command.Parameters.AddWithValue("@StreetType", model.StreetType?? "");
+                    command.Parameters.AddWithValue("@StreetType", model.AddressModel.StreetType?? "");
                     command.Parameters.AddWithValue("@AddressType", model.AddressType?? "");
                     command.Parameters.AddWithValue("@Longitude", model.Longitude);
                     command.Parameters.AddWithValue("@Latitude", model.Latitude);
@@ -88,10 +90,10 @@ namespace CivilMapSQLDatabase
                                 StreetNumber = reader.IsDBNull(1)? null: reader.GetString(1),
                                 Direction = reader.IsDBNull(2) ? null : reader.GetString(2),
                                 Street = reader.IsDBNull(3) ? null : reader.GetString(3),
-                                City = reader.IsDBNull(4) ? null : reader.GetString(4),
-                                Zipcode = reader.IsDBNull(5) ? null : reader.GetString(5)
-                            },
-                            StreetType = reader.IsDBNull(6) ? null : reader.GetString(6),
+                                StreetType = reader.IsDBNull(4) ? null : reader.GetString(4),
+                                City = reader.IsDBNull(5) ? null : reader.GetString(5),
+                                Zipcode = reader.IsDBNull(6) ? null : reader.GetString(6)
+                            },                           
                             AddressType = reader.IsDBNull(7) ? null : reader.GetString(7),
                             Longitude = reader.GetDecimal(8),
                             Latitude = reader.GetDecimal(9),
@@ -133,10 +135,11 @@ namespace CivilMapSQLDatabase
                                 StreetNumber = reader.IsDBNull(1) ? null : reader.GetString(1),
                                 Direction = reader.IsDBNull(2) ? null : reader.GetString(2),
                                 Street = reader.IsDBNull(3) ? null : reader.GetString(3),
+                                StreetType = reader.IsDBNull(6) ? null : reader.GetString(6),
                                 City = reader.IsDBNull(4) ? null : reader.GetString(4),
-                                Zipcode = reader.IsDBNull(5) ? null : reader.GetString(5)
-                            },
-                            StreetType = reader.IsDBNull(6) ? null : reader.GetString(6),
+                                Zipcode = reader.IsDBNull(5) ? null : reader.GetString(5),
+                                State = reader.IsDBNull(11) ? null : reader.GetString(11)
+                            },                           
                             AddressType = reader.IsDBNull(7) ? null : reader.GetString(7),
                             Longitude = reader.GetDecimal(8),
                             Latitude = reader.GetDecimal(9),
@@ -156,7 +159,7 @@ namespace CivilMapSQLDatabase
         public List<PurifiedAddressModel> SelectCivilMapPurifiedAddress(PurifiedAddressModel model)
         {
             string commandText = "select * from CivilMapPurifiedAddress where " +
-                                 "StreetNumber = @StreetNumber and Direction = @Direction and Street = @Street and City like @City and Zipcode = @Zipcode";
+                                 "StreetNumber = @StreetNumber and Direction = @Direction and Street = @Street and StreetType = @StreetType and City like @City and Zipcode = @Zipcode";
             var list = new List<PurifiedAddressModel>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -166,10 +169,11 @@ namespace CivilMapSQLDatabase
                     SqlCommand command = new SqlCommand(commandText, connection);
                     connection.Open();
                     command.Parameters.AddWithValue("@StreetNumber", model.AddressModel.StreetNumber);
-                    command.Parameters.AddWithValue("@Direction", model.AddressModel.Direction??"");
+                    command.Parameters.AddWithValue("@Direction", model.AddressModel.Direction ?? "");
                     command.Parameters.AddWithValue("@Street", (model.AddressModel.Street).ToString());
+                    command.Parameters.AddWithValue("@StreetType", (model.AddressModel.StreetType)?.ToString() ?? "");
                     command.Parameters.AddWithValue("@City", (model.AddressModel.City).ToString());
-                    command.Parameters.AddWithValue("@Zipcode", model.AddressModel.Zipcode??"");
+                    command.Parameters.AddWithValue("@Zipcode", model.AddressModel.Zipcode ?? "");
                     SqlDataReader reader = command.ExecuteReader();
 
                     while (reader.Read())
@@ -182,10 +186,11 @@ namespace CivilMapSQLDatabase
                                 StreetNumber = reader.IsDBNull(1) ? null : reader.GetString(1),
                                 Direction = reader.IsDBNull(2) ? null : reader.GetString(2),
                                 Street = reader.IsDBNull(3) ? null : reader.GetString(3),
+                                StreetType = reader.IsDBNull(6) ? null : reader.GetString(6),
                                 City = reader.IsDBNull(4) ? null : reader.GetString(4),
-                                Zipcode = reader.IsDBNull(5) ? null : reader.GetString(5)
-                            },
-                            StreetType = reader.IsDBNull(6) ? null : reader.GetString(6),
+                                Zipcode = reader.IsDBNull(5) ? null : reader.GetString(5),
+                                State = reader.IsDBNull(11) ? null : reader.GetString(11)
+                            },                         
                             AddressType = reader.IsDBNull(7) ? null : reader.GetString(7),
                             Longitude = reader.GetDecimal(8),
                             Latitude = reader.GetDecimal(9),
@@ -347,6 +352,7 @@ namespace CivilMapSQLDatabase
                                  "[City] NVARCHAR(384) NULL," +
                                  "[Zipcode] NVARCHAR(384) NULL," +
                                  "[PurifiedAddressId] UNIQUEIDENTIFIER NOT NULL," +
+                                 "[State] NVARCHAR(384) NULL," +
                                  "PRIMARY KEY CLUSTERED([NonPurifiedAddressId] ASC)," +
                                  "CONSTRAINT[FK_CivilMapNonPurifiedAddress_CivilMapPurifiedAddress] FOREIGN KEY([PurifiedAddressId]) REFERENCES[dbo].[CivilMapPurifiedAddress] ([PurifiedAddressId]))";
 
@@ -372,10 +378,15 @@ namespace CivilMapSQLDatabase
                     {
                         item.AddressModel.Zipcode = "";
                     }
+                    if (item.AddressModel.State == null)
+                    {
+                        item.AddressModel.State = "";
+                    }
+
 
                     commandText = 
-                                  "Insert into CivilMapNonPurifiedAddress (StreetNumber, Direction, Street, City, Zipcode) output INSERTED.NonPurifiedAddressId values " +
-                                  "(@StreetNumber, @Direction, @Street, @City, @Zipcode)";
+                                  "Insert into CivilMapNonPurifiedAddress (StreetNumber, Direction, Street, City, Zipcode, State) output INSERTED.NonPurifiedAddressId values " +
+                                  "(@StreetNumber, @Direction, @Street, @City, @Zipcode, @State)";
                     command = new SqlCommand(commandText, connection);
 
                     command.Parameters.AddWithValue("@StreetNumber", item.AddressModel.StreetNumber);
@@ -383,6 +394,7 @@ namespace CivilMapSQLDatabase
                     command.Parameters.AddWithValue("@Street", item.AddressModel.Street);
                     command.Parameters.AddWithValue("@City", item.AddressModel.City);
                     command.Parameters.AddWithValue("@Zipcode", item.AddressModel.Zipcode);
+                    command.Parameters.AddWithValue("@State", item.AddressModel.State);
                     insertedId = command.ExecuteScalar();
                     connection.Close();
                     return insertedId;
@@ -477,7 +489,7 @@ namespace CivilMapSQLDatabase
 
         public List<NonPurifiedAddressModel> SelectCivilMapNonPurifiedAddress(NonPurifiedAddressModel model)
         {
-            string commandText = "select * from CivilMapNonPurifiedAddress where StreetNumber = @StreetNumber and Street = @Street and City like @City and Zipcode = @Zipcode ";
+            string commandText = "select * from CivilMapNonPurifiedAddress where StreetNumber = @StreetNumber and Street = @Street and City like @City";
             var list = new List<NonPurifiedAddressModel>();
             
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -493,7 +505,6 @@ namespace CivilMapSQLDatabase
                     command.Parameters.AddWithValue("@StreetNumber", model.AddressModel.StreetNumber);
                     command.Parameters.AddWithValue("@Street", (model.AddressModel.Street).ToString());
                     command.Parameters.AddWithValue("@City", (model.AddressModel.City).ToString());
-                    command.Parameters.AddWithValue("@Zipcode", model.AddressModel.Zipcode);
 
                     SqlDataReader reader = command.ExecuteReader();
                     
@@ -509,6 +520,7 @@ namespace CivilMapSQLDatabase
                                 Street = reader.IsDBNull(3) ? null : reader.GetString(3),
                                 City = reader.IsDBNull(4) ? null : reader.GetString(4),
                                 Zipcode = reader.IsDBNull(5) ? null : reader.GetString(5),
+                                State = reader.IsDBNull(7) ? null : reader.GetString(7)
                             },
                             PurifiedAddressId = reader.IsDBNull(6) ? (Guid?)null : reader.GetGuid(6)
                         });
@@ -625,7 +637,7 @@ namespace CivilMapSQLDatabase
 
         public List<PurifiedAddressModel?> Validate100Addresses()
         {
-            string commandText = "select ARREST_ID, STREET_NO, STREET_NME, CITY, ZIP_CD from CivilMapArrest ORDER BY ARREST_ID OFFSET 3610 ROWS FETCH NEXT 100 ROWS ONLY";
+            string commandText = "select ARREST_ID, STREET_NO, STREET_DIRECTION_CD, STREET_NME, CITY, STATE_CD from CivilMapArrest ORDER BY ARREST_ID OFFSET 10100 ROWS FETCH NEXT 3000 ROWS ONLY";
 
             PurifiedAddressModel purifiedAddress = new PurifiedAddressModel();
             NonPurifiedAddressModel nonPurifiedAddress = new NonPurifiedAddressModel();
@@ -659,9 +671,11 @@ namespace CivilMapSQLDatabase
                         list.Add(new AddressModel
                         {
                             StreetNumber = reader.IsDBNull(1) ? null : reader.GetSqlDecimal(1).ToString(),
-                            Street = reader.IsDBNull(2) ? null : reader.GetString(2),
-                            City = reader.IsDBNull(3) ? null : reader.GetString(3),
-                            Zipcode = reader.IsDBNull(4) ? null : reader.GetString(4),
+                            Direction = reader.IsDBNull(2) ? null : reader.GetString(2),
+                            Street = reader.IsDBNull(3) ? null : reader.GetString(3),
+                            City = reader.IsDBNull(4) ? null : reader.GetString(4),
+                            State = reader.IsDBNull(5) ? null : reader.GetString(5),
+                            Zipcode = null
                         });
 
                     }
@@ -672,6 +686,8 @@ namespace CivilMapSQLDatabase
                     Debug.WriteLine("Error: " + ex.Message);
                 }
             }
+
+            Console.WriteLine("Grabbed Data");
 
             for (int i = 0; i < list.Count; i++)
             {
@@ -717,12 +733,14 @@ namespace CivilMapSQLDatabase
                 }
             }
 
+            Console.WriteLine("Checked for existing");
+
             //Validate
 
             for (int i = 0; i < nonPurifiedAddressList.Count; i++)
             {
                 address = "";
-                address += " " + nonPurifiedAddressList[i].AddressModel.StreetNumber + " " + nonPurifiedAddressList[i].AddressModel.Street + " " + nonPurifiedAddressList[i].AddressModel.City + " IL ";
+                address += " " + nonPurifiedAddressList[i].AddressModel.StreetNumber + " " + nonPurifiedAddressList[i].AddressModel.Direction + " " + nonPurifiedAddressList[i].AddressModel.Street + " " + nonPurifiedAddressList[i].AddressModel.City + " IL";// + //nonPurifiedAddressList[i].AddressModel.State;
                 addresses.Add(address);
             }
 
@@ -733,6 +751,8 @@ namespace CivilMapSQLDatabase
             {
                 PurifiedAddressModel currentValidated = new PurifiedAddressModel();
                 List<PurifiedAddressModel?> validatedAddresses = geoClient.BatchGeocode(addresses);
+
+                Console.WriteLine("Validated Addresses");
 
                 for (int i = 0; i < validatedAddresses.Count; i++)
                 {
@@ -753,6 +773,162 @@ namespace CivilMapSQLDatabase
                     }
 
                 }
+
+                Console.WriteLine("Addresses Added");
+
+
+                Debug.WriteLine("Added: " + count + " addresses");
+                Debug.WriteLine("Existed Already: " + existed);
+                return validatedAddresses;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error: " + ex.Message);
+            }
+            return null;
+        }
+
+        public List<PurifiedAddressModel?> Validate100Crimes()
+        {
+            string commandText = "select ID, STNUM, STDIR, STREET, CITY, STATE_CD from CivilMapCrime ORDER BY ID OFFSET 400 ROWS FETCH NEXT 1000 ROWS ONLY";
+
+            PurifiedAddressModel purifiedAddress = new PurifiedAddressModel();
+            NonPurifiedAddressModel nonPurifiedAddress = new NonPurifiedAddressModel();
+            List<String> crimes = new List<String>();
+            List<AddressModel> list = new List<AddressModel>();
+            List<PurifiedAddressModel> purifiedAddressList = new List<PurifiedAddressModel>();
+            List<PurifiedAddressModel> purifiedSelectResult = new List<PurifiedAddressModel>();
+            List<NonPurifiedAddressModel> nonPurifiedAddressList = new List<NonPurifiedAddressModel>();
+            List<NonPurifiedAddressModel> nonPurifiedSelectResult = new List<NonPurifiedAddressModel>();
+            List<String> addresses = new List<String>();
+            string address;
+            int fieldCount;
+            int existed = 0;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand command = new SqlCommand(commandText, connection);
+                    connection.Open();
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    //Debug.WriteLine(reader);
+
+                    while (reader.Read())
+                    {
+                        fieldCount = reader.FieldCount;
+
+                        crimes.Add(reader.GetString(0));
+                        list.Add(new AddressModel
+                        {
+                            StreetNumber = reader.IsDBNull(1) ? null : reader.GetSqlDecimal(1).ToString(),
+                            Direction = reader.IsDBNull(2) ? null : reader.GetString(2),
+                            Street = reader.IsDBNull(3) ? null : reader.GetString(3),
+                            City = reader.IsDBNull(4) ? null : reader.GetString(4),
+                            State = reader.IsDBNull(5) ? null : reader.GetString(5),
+                            Zipcode = null
+                        });
+
+                    }
+                    connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error: " + ex.Message);
+                }
+            }
+
+            Console.WriteLine("Grabbed Data");
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                purifiedAddress.AddressModel = list[i];
+                nonPurifiedAddress.AddressModel = list[i];
+                purifiedSelectResult = SelectCivilMapPurifiedAddress(purifiedAddress);
+
+                //Already Exists In Purified, Don't Validate
+                if (purifiedSelectResult.Count > 0)
+                {
+                    existed++;
+                    crimes.RemoveAt(i);
+                    list.RemoveAt(i);
+                    continue;
+                }
+
+                nonPurifiedSelectResult = SelectCivilMapNonPurifiedAddress(nonPurifiedAddress);
+                if (nonPurifiedSelectResult.Count > 0)
+                {
+                    if (nonPurifiedSelectResult[0].PurifiedAddressId != null)
+                    {
+                        existed++;
+                        crimes.RemoveAt(i);
+                        list.RemoveAt(i);
+                    }
+                    else
+                    {
+                        nonPurifiedAddressList.Add(new NonPurifiedAddressModel
+                        {
+                            NonPurifiedAddressId = nonPurifiedSelectResult[0].NonPurifiedAddressId,
+                            AddressModel = list[i]
+                        });
+                    }
+                }
+                else
+                {
+                    Guid tempId = (Guid)AddCivilMapNonPurifiedAddress(nonPurifiedAddress);
+                    nonPurifiedAddressList.Add(new NonPurifiedAddressModel
+                    {
+                        NonPurifiedAddressId = tempId,
+                        AddressModel = list[i]
+                    });
+                }
+            }
+
+            Console.WriteLine("Checked for existing");
+
+            //Validate
+
+            for (int i = 0; i < nonPurifiedAddressList.Count; i++)
+            {
+                address = "";
+                address += " " + nonPurifiedAddressList[i].AddressModel.StreetNumber + " " + nonPurifiedAddressList[i].AddressModel.Direction + " " + nonPurifiedAddressList[i].AddressModel.Street + " " + nonPurifiedAddressList[i].AddressModel.City + " IL";// + //nonPurifiedAddressList[i].AddressModel.State;
+                addresses.Add(address);
+            }
+
+            GeocodioClient.GeocodioClient geoClient = new GeocodioClient.GeocodioClient("3551a95da75a999c89a259153a77d2aa9a3d5a2");
+
+            int count = 0;
+            try
+            {
+                PurifiedAddressModel currentValidated = new PurifiedAddressModel();
+                List<PurifiedAddressModel?> validatedAddresses = geoClient.BatchGeocode(addresses);
+
+                Console.WriteLine("Validated Addresses");
+
+                for (int i = 0; i < validatedAddresses.Count; i++)
+                {
+                    if (validatedAddresses[i] != null)
+                    {
+                        currentValidated = (PurifiedAddressModel)validatedAddresses[i];
+                        Guid newPurifiedId = (Guid)AddCivilMapPurifiedAddress(currentValidated);
+
+                        NonPurifiedAddressModel updateModel = new NonPurifiedAddressModel();
+                        updateModel.AddressModel = nonPurifiedAddressList[i].AddressModel;
+                        updateModel.PurifiedAddressId = newPurifiedId;
+                        updateModel.NonPurifiedAddressId = nonPurifiedAddressList[i].NonPurifiedAddressId;
+
+                        UpdateCivilMapNonPurifiedAddress(updateModel);
+
+                        InsertCivilMapCrimePurifiedAddress(crimes[i], newPurifiedId);
+                        count++;
+                    }
+
+                }
+
+                Console.WriteLine("Addresses Added");
+
 
                 Debug.WriteLine("Added: " + count + " addresses");
                 Debug.WriteLine("Existed Already: " + existed);
@@ -897,6 +1073,36 @@ namespace CivilMapSQLDatabase
             }
         }
 
+        public object InsertCivilMapCrimePurifiedAddress(string crime, Guid address)
+        {
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    string commandText = "Insert into CivilMapCrimePurifiedAddress (Crime_FK, PurifiedAddress_FK) output INSERTED.Id values " +
+                                  "(@crime, @address)";
+                    SqlCommand command = new SqlCommand(commandText, connection);
+                    connection.Open();
+
+                    command.Parameters.AddWithValue("@crime", crime);
+                    command.Parameters.AddWithValue("@address", address);
+
+                    object id = command.ExecuteScalar();
+                    connection.Close();
+
+                    InsertCivilMapPurifiedCrime(crime, address);
+
+                    return id;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error: " + ex.Message);
+                }
+                return null;
+            }
+        }
+
         public object InsertCivilMapPurifiedArrest(string arrest, Guid address)
         {
             CivilMapCrimeArrestModel arrestModel = new CivilMapCrimeArrestModel();
@@ -934,13 +1140,80 @@ namespace CivilMapSQLDatabase
                     connection.Open();
 
                     if (arrestModel.Date == null)
-                        arrestModel.Date = null;
+                        arrestModel.Date = SqlDateTime.Null;
+                    if(arrestModel.Beat == null)
+                    {
+                        arrestModel.Beat = "";
+                    }
 
                     command.Parameters.AddWithValue("@Date", arrestModel.Date);
                     command.Parameters.AddWithValue("@Longitude", arrestModel.Longitude);
                     command.Parameters.AddWithValue("@Latitude", arrestModel.Latitude);
                     command.Parameters.AddWithValue("@Beat", arrestModel.Beat);
                     command.Parameters.AddWithValue("@PurifiedAddressId", arrestModel.PurifiedAddressId);
+
+                    object id = command.ExecuteScalar();
+                    connection.Close();
+
+                    return id;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error: " + ex.Message);
+                }
+                return null;
+            }
+        }
+
+        public object InsertCivilMapPurifiedCrime(string crime, Guid address)
+        {
+            CivilMapCrimeArrestModel crimeModel = new CivilMapCrimeArrestModel();
+            PurifiedAddressModel purifiedAddress = new PurifiedAddressModel();
+            List<PurifiedAddressModel> purifiedAddressSelectReturn = new List<PurifiedAddressModel>();
+            CivilMapArrestModel arrestSelectReturn = new CivilMapArrestModel();
+            purifiedAddress.PurifiedAddressId = address;
+
+            purifiedAddressSelectReturn = SelectCivilMapPurifiedAddressById(purifiedAddress);
+
+            if (purifiedAddressSelectReturn.Count > 0)
+            {
+                crimeModel.PurifiedAddressId = address;
+                crimeModel.Longitude = purifiedAddressSelectReturn[0].Longitude;
+                crimeModel.Latitude = purifiedAddressSelectReturn[0].Latitude;
+            }
+            else
+            {
+                return null;
+            }
+
+            arrestSelectReturn = SelectArrestBeatDate(crime);
+            if (arrestSelectReturn.Arrest_Date != null && arrestSelectReturn.Cpd_Beat != null)
+            {
+                crimeModel.Date = arrestSelectReturn.Arrest_Date;
+                crimeModel.Beat = arrestSelectReturn.Cpd_Beat;
+            }
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    string commandText = "Insert into CivilMapPurifiedCrime (Date, Longitude, Latitude, Beat, PurifiedAddressId) output INSERTED.Id values " +
+                                  "(@Date, @Longitude, @Latitude, @Beat, @PurifiedAddressId)";
+                    SqlCommand command = new SqlCommand(commandText, connection);
+                    connection.Open();
+
+                    if (crimeModel.Date == null)
+                        crimeModel.Date = SqlDateTime.Null;
+                    if (crimeModel.Beat == null)
+                    {
+                        crimeModel.Beat = "";
+                    }
+
+                    command.Parameters.AddWithValue("@Date", crimeModel.Date);
+                    command.Parameters.AddWithValue("@Longitude", crimeModel.Longitude);
+                    command.Parameters.AddWithValue("@Latitude", crimeModel.Latitude);
+                    command.Parameters.AddWithValue("@Beat", crimeModel.Beat);
+                    command.Parameters.AddWithValue("@PurifiedAddressId", crimeModel.PurifiedAddressId);
 
                     object id = command.ExecuteScalar();
                     connection.Close();

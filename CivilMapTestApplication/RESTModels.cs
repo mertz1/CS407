@@ -11,6 +11,7 @@ namespace CivilMapTestApplication
         public string StreetNumber { get; set; }
         public string Direction { get; set; }
         public string Street { get; set; }
+        public string StreetType { get; set; }
         public string City { get; set; }
         public string Zipcode { get; set; }
     }
@@ -19,7 +20,6 @@ namespace CivilMapTestApplication
     {
         public string PurifiedAddressId { get; set; }
         public AddressRESTModel AddressRESTModel { get; set; }
-        public string StreetType { get; set; }
         public string AddressType { get; set; }
         public Decimal Longitude { get; set; }
         public Decimal Latitude { get; set; }

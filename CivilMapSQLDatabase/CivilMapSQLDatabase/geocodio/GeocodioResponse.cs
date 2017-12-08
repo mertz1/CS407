@@ -42,6 +42,7 @@ namespace GeocodioClient
         public GeocodioAddressComponents address_components { get; set; }
         public string formatted_address { get; set; }
         public GeocodioLatLng location { get; set; }
+        public string accuracy_type { get; set; }
 
         /// <summary>
         /// This table describes accuracy scores: http://geocod.io/docs/#toc_25
@@ -52,6 +53,7 @@ namespace GeocodioClient
     public class GeocodioAddressComponents
     {
         public string number { get; set; }
+        public string predirectional { get; set; }
         public string street { get; set; }
         public string suffix { get; set; }
         public string city { get; set; }

@@ -26,7 +26,7 @@ namespace CivilMapSQLDatabase
             //list = addressPurification.SelectCrimeAddressPolygon();
             //addressPurification.UpdateCivilMapPurifiedAddressOnPolygons(list);
 
-            InsertTestArrest();
+            //InsertTestArrest();
 
             //var address = new PurifiedAddressModel();
             //address.AddressModel.Street = "Waldron Street";
@@ -58,7 +58,7 @@ namespace CivilMapSQLDatabase
 
             //////////////////////////////////////////////////////////////////
             //Debug.WriteLine("Before");
-            //addressPurification.Validate100Addresses();
+            addressPurification.Validate100Crimes();
 
             //Debug.WriteLine("AFter");
             //////////////////////////////////////////////////////////////////
