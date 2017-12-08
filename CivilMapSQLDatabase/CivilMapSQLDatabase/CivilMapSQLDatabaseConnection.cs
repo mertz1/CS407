@@ -9,7 +9,6 @@ using System.Data.SqlClient;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using Excel = Microsoft.Office.Interop.Excel;
-using System.Globalization;
 
 namespace CivilMapSQLDatabase
 {
@@ -20,13 +19,18 @@ namespace CivilMapSQLDatabase
             CrimeAndArrestDataRetrieve crimeAndArrestDataRetrieve = new CrimeAndArrestDataRetrieve();
             AddressPurification addressPurification = new AddressPurification();
             VisualizationDataAggregation visualizationDataAggregation = new VisualizationDataAggregation();
+            DataExport dataExport = new DataExport();
 
             //List<AddressPolygonModel> list = addressPurification.SelectArrestAddressPolygon();
             //addressPurification.UpdateCivilMapPurifiedAddressOnPolygons(list);
             //list = addressPurification.SelectCrimeAddressPolygon();
             //addressPurification.UpdateCivilMapPurifiedAddressOnPolygons(list);
+<<<<<<< HEAD
 
             //InsertTestArrest();
+=======
+            
+>>>>>>> 0ad6d5996883cfcedc438945d7f66923233c9799
 
             //var address = new PurifiedAddressModel();
             //address.AddressModel.Street = "Waldron Street";
