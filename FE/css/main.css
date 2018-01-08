@@ -9,9 +9,10 @@ body{
     margin: 0px;
 }
 
-::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: black;
+.polygon ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: gray;
 }
+
 
 select { text-align:center; }
 select .lt { text-align:center; }
@@ -362,7 +363,7 @@ input[type="radio"] {
 .pdf_btn {
     position: absolute;
     left: 74vw;
-    top: -0.5vh;
+    top: 0.5vh;
     background: #d61337;
     color: white;
     text-align: center;
@@ -442,4 +443,205 @@ input[type="radio"] {
   -moz-transform: rotate(-135deg);
   -o-transform: rotate(-135deg);
   transform: rotate(-135deg);
+}
+
+.polygon {
+    display: none;
+    position: fixed;
+    left: 37vw;
+    top: 25vh;
+    background: rgba(93, 95, 95, 0.86);
+    text-align: center;
+    width: 26vw;
+    z-index: 10;
+    height: 50vh;
+    border-radius: 10px;
+}
+
+.sel_poly {
+    position: absolute;
+    bottom: -2.7vh;
+    border: none;
+    background: #319beb;
+    color: white;
+    width: 14vw;
+    font-size: 1.3vw;
+    height: 5vh;
+    left: 0vw;
+    font-size: 1.6vw;
+}
+
+
+.create_map {
+    position: absolute;
+    bottom: -2.7vh;
+    border: none;
+    background: #319beb;
+    color: white;
+    width: 13vw;
+    font-size: 1.3vw;
+    height: 5vh;
+    left: 17vw;
+    font-size: 1.6vw;
+}
+
+#sel_type {
+    background: white;
+    position: absolute;
+    left: 6vw;
+    top: 6vh;
+    text-align-last: center;
+    padding-left: 1.45vw;
+    width: 14vw;
+}
+
+#sel_area {
+    background: #989494;
+    position: absolute;
+    left: 6vw;
+    top: 13vh;
+    text-align-last: center;
+    padding-left: 1.45vw;
+    width: 14vw;
+}
+
+#sel_dist {
+    background: #989494;
+    position: absolute;
+    left: 6vw;
+    top: 20vh;
+    text-align-last: center;
+    padding-left: 1.45vw;
+    width: 14vw;
+}
+
+#sel_sec {
+    background: #989494;
+    position: absolute;
+    left: 6vw;
+    top: 27vh;
+    text-align-last: center;
+    padding-left: 1.45vw;
+    width: 14vw;
+}
+
+#sel_beat {
+    background: #989494;
+    position: absolute;
+    left: 6vw;
+    top: 34vh;
+    text-align-last: center;
+    padding-left: 1.45vw;
+    width: 14vw;
+}
+
+.submit_polygon {
+    /*background: #989494;*/
+    color: white;
+    position: absolute;
+    background: #d61337;
+    color: white;
+    text-align: center;
+    width: 14vw;
+    height: 4vh;
+    border-style: unset;
+    font-size: 1.3vw;
+    border-radius: 0px;
+    line-height: 4vh;
+    border-radius: 11px;
+    font-size: 1.3vw;
+    top: 41vh;
+    left: 6vw;
+}
+
+.input_info {
+    color: white;
+    top: 3vh;
+    position: absolute;
+    width: 80%;
+    left: 10%;
+}
+
+.input_points {
+    position: absolute;
+    left: 0.9vw;
+    top: 8vh;
+    border-radius: 10px;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    padding-top: 2px;
+    color: black;
+}
+
+.submit_cust_map {
+    /*background: #989494;*/
+    color: white;
+    position: absolute;
+    background: #d61337;
+    color: white;
+    text-align: center;
+    width: 14vw;
+    height: 4vh;
+    border-style: unset;
+    font-size: 1.3vw;
+    border-radius: 0px;
+    line-height: 4vh;
+    border-radius: 11px;
+    font-size: 1.3vw;
+    top: 43vh;
+    left: 6vw;
+}
+
+.map_id {
+    display: none;
+    color: white;
+    background: #101010d4;
+    height: 5vh;
+    width: 10vw;
+    position: fixed;
+    left: 45vw;
+    top: 23vh;
+    border-radius: 8px;
+    text-align: center;
+    line-height: 5vh;
+}
+
+#input_id_id {
+    width: 6vw;
+    position: relative;
+    height: 4vh;
+    /* left: 0vw; */
+    color: black;
+    border-radius: 5px;
+    text-align: center;
+    top: -0.55vh;
+    left: 2px;
+}
+
+.input_id_submit {
+    position: relative;
+    /* left: 3vw; */
+    border: none;
+    background: none;
+    width: 7vw;
+    height: 6vh;
+    top: -0.5vh;
+}
+
+#input_id_sec {
+    position: absolute;
+    bottom: -2.7vh;
+    /* border: none; */
+    background: #319beb;
+    color: white;
+    width: 13vw;
+    font-size: 1.3vw;
+    height: 5vh;
+    left: 34vw;
+    font-size: 1.6vw;
+    border-radius: 5px;
+    /* padding-bottom: 0px; */
+    margin: 0px;
+    text-align: center;
+    line-height: 5vh;
 }
