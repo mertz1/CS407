@@ -11,6 +11,9 @@
     <link rel="stylesheet" type="text/css" href="../EasyAutocomplete/easy-autocomplete.min.css">
     <link rel="stylesheet" type="text/css" href="../EasyAutocomplete/easy-autocomplete.themes.min.css">
     <script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="../js/FileSaver.js"></script>
+    <script type="text/javascript" src="../js/canvas-toBlob.js"></script>
+    <script type="text/javascript" src="../js/Polygon.js"></script>
     <script type="text/javascript" src="../js/main.js"></script>
     <script type="text/javascript" src="../js/jquery-1.12.4.js"></script>
     <script type="text/javascript" src="../js/jquery-ui.js"></script>
@@ -135,34 +138,77 @@
         <i class="fa fa-spinner fa-pulse fa-2x fa-fw" style="position: absolute;margin-left: 50%;margin-right: 50%;margin-top: 25%; color:white; display:none" ></i>
 
     <form class="exportpdf">
-      <label class="pdf_label">Page size </label>
-      <select id="format" class="pdf_select">
-        <option value="a0">A0 (slow)</option>
-        <option value="a1">A1</option>
-        <option value="a2">A2</option>
-        <option value="a3">A3</option>
-        <option value="a4" selected>A4</option>
-        <option value="a5">A5 (fast)</option>
-      </select>
-      <label class="pdf_label">Resolution </label>
-      <select id="resolution" class="pdf_select" style="width:11vw;">
-        <option value="72">72 dpi (fast)</option>
-        <option value="150">150 dpi</option>
-        <option value="300">300 dpi (slow)</option>
-      </select>
-          <button class="pdf_btn" id="export-pdf">Export PDF</button>
+          <button class="pdf_btn" id="export-pdf">Export PNG</button>
     </form>
 
+    <button class="sel_poly" onclick="showPolygon()">
+        <i class="fa fa-area-chart" aria-hidden="true"></i>
+        Draw Polygon
+    </button>
+
+    <button class="create_map" onclick="showMapInput()">
+        <i class="fa fa-clipboard" aria-hidden="true"></i>
+        Create Map
+    </button>
+
+    <div class="polygon" id="polygon_sec">
+        <form id="polygon_form">
+        <select id="sel_type" onchange="showPolygonOption()">
+            <option value="bad">select type</option>
+            <option value="area">Areas</option>
+            <option value="district">Districts</option>
+            <option value="sector">Sectors</option>
+            <option value="beat">Beats</option>
+        </select>
+        <select id="sel_area" disabled>
+            <option value="bad">select areas</option>
+        </select>
+        <select id="sel_dist" disabled>
+            <option value="bad">select district</option>
+        </select>
+        <select id="sel_sec" disabled>
+            <option value="bad">select sectors</option>
+        </select>
+        <select id="sel_beat" disabled>
+            <option value="bad">select beats</option>
+        </select>
+        </form>
+        <button class="submit_polygon" onclick="drawPolygon()">submit</button>
+    </div>
+
+    <div class="polygon" id="map_input_sec">
+        <p class="input_info">Input in format (lat,long\n)</p>
+        <textarea class="input_points" id="input_points_val" rows="10" cols="27" placeholder="41.917781,-87.701545
+41.917781,-87701545"></textarea>
+        <button class="submit_cust_map" onclick="generatejsonObj()">submit</button>
+    </div>
+
+    <div class="map_id" id="map_id_sec" onclick="hideMapID()">
+    </div>
+    <div id="input_id_sec">
+    <p class="input_mapID" onclick="inputMapID()">
+        <i class="fa fa-file-text" aria-hidden="true"></i>
+        Input MapID
+    </p>
+    </div>
         <form id="form">
             <div class="side_bar" id="side">
                 <p class="side_bar_title"> More Filter </p>
                 <div class="side_bar_option">
                     <p class="side_bar_text" id="pre_map"> Predefined Map </p>
-                    <div class="drop_panel" id="pre_map_panel">
-                        <p class="side_bar_select">Burglaries</p>
-                        <p class="side_bar_select">Roberies</p>
-                        <p class="side_bar_select">Non-Violent</p>
-                        <p class="side_bar_select" style="margin-bottom: 1.2vh;">Violent</p>
+                    <div class="drop_panel" id="pre_map_panel" name="pre_map_type">
+                        <input type="radio" name="pre_type" value="0" id="p1">
+                            <label class="tab-label" for="p1">Past Week</label>
+                        </input>
+                        <input type="radio" name="pre_type" value="1" id="p2">
+                            <label class="tab-label" for="p2">Past Year</label>
+                        </input>
+                        <input type="radio" name="pre_type" value="2" id="p3">
+                            <label class="tab-label" for="p3">This Year</label>
+                        </input>
+                        <input type="radio" name="pre_type" value="3" id="p4">
+                            <label class="tab-label" for="p4">Past 2 Years</label>
+                        </input>
                     </div>
                 </div>
 
