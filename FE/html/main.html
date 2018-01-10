@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>main</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
+    <link rel="stylesheet" type="text/css" href="../css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="../EasyAutocomplete/easy-autocomplete.min.css">
+    <link rel="stylesheet" type="text/css" href="../EasyAutocomplete/easy-autocomplete.themes.min.css">
+    <script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="../js/FileSaver.js"></script>
+    <script type="text/javascript" src="../js/canvas-toBlob.js"></script>
+    <script type="text/javascript" src="../js/Polygon.js"></script>
+    <script type="text/javascript" src="../js/main.js"></script>
+    <script type="text/javascript" src="../js/jquery-1.12.4.js"></script>
+    <script type="text/javascript" src="../js/jquery-ui.js"></script>
+    <script type="text/javascript" src="../EasyAutocomplete/jquery.easy-autocomplete.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.4.2/css/ol.css" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://openlayers.org/en/v4.4.2/build/ol.js" type="text/javascript"></script>
+
+
+
+    <style>
+        .map {
+            height: 400px;
+            width: 100%;
+        }
+
+        .ol-info {
+            padding:0px;
+            position: absolute;
+            right:-78vw;
+            top: -50px;
+            margin:1px;
+            color:#fff;
+            font-size:1.14em;
+            font-weight:700;
+            text-decoration:none;
+            text-align:center;
+            height:1.375em;
+            width:1.375em;
+            line-height:.4em;
+            background-color:rgba(0,60,136,.5);
+            border:none;
+            border-radius:1px;
+        }
+
+        .ol-mycontrol {
+            background-color: rgba(255,255,255,.4);
+            border-radius: 4px;
+            padding:2px;
+            color:white;
+            position: absolute;
+            width:30px;
+            top: 60px;
+            left:7px;
+        }
+
+        .ol-mycontrol button{
+            display:block;
+            margin:1px;
+            padding:0;
+            color:#fff;
+            font-size:1.14em;
+            font-weight:700;
+            text-decoration:none;
+            text-align:center;
+            height:1.375em;
+            width:1.375em;
+            line-height:.4em;
+            background-color:rgba(0,60,136,.5);
+            border:none;
+            border-radius:1px;
+        }
+        .ol-mycontrol button::-moz-focus-inner{
+            border:none;
+            padding:0;
+        }
+        .ol-mycontrol button:hover{
+            top: -8vh;
+            left: 78vw;
+            text-decoration:none;
+            background-color:rgba(0,60,136,.7);
+        }
+        #legend
+        {
+            position:absolute;
+            top:10px;
+            right:40px;
+            z-index: 10000;
+            width: 300px;
+            height:250px;
+            background-image: url("../img/overlay.png");
+            visibility: hidden;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="banner">
+        <div id="nav-icon1">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <p class="icon"> CivilMap </p>
+        <button class="logout_btn" onclick="logout()"> Logout </button>
+    </div>
+
+    <!--
+    <div class="side_bar">
+        <p class="side_bar_text"> Predefined Map </p>
+        <div class="side_bar_option">
+            <button class="side_bar_button">Burglaries</button></br>
+            <button class="side_bar_button">Roberies</button></br>
+            <button class="side_bar_button">Non-Violent</button></br>
+            <button class="side_bar_button">Violent</button></br>
+        </div>
+    </div>
+    -->
+
+    <div class="main_map" id="main">
+
+    <!--  -->
+        <!-- need this for the map -->
+        <div id="map" class="map" style="height: 66vh">
+            <div id="popup"></div>
+            <div id="legend"></div>
+        </div>
+        <i class="fa fa-spinner fa-pulse fa-2x fa-fw" style="position: absolute;margin-left: 50%;margin-right: 50%;margin-top: 25%; color:white; display:none" ></i>
+
+    <form class="exportpdf">
+          <button class="pdf_btn" id="export-pdf">Export PNG</button>
+    </form>
+
+    <button class="sel_poly" onclick="showPolygon()">
+        <i class="fa fa-area-chart" aria-hidden="true"></i>
+        Draw Polygon
+    </button>
+
+    <button class="create_map" onclick="showMapInput()">
+        <i class="fa fa-clipboard" aria-hidden="true"></i>
+        Create Map
+    </button>
+
+    <div class="polygon" id="polygon_sec">
+        <form id="polygon_form">
+        <select id="sel_type" onchange="showPolygonOption()">
+            <option value="bad">select type</option>
+            <option value="area">Areas</option>
+            <option value="district">Districts</option>
+            <option value="sector">Sectors</option>
+            <option value="beat">Beats</option>
+        </select>
+        <select id="sel_area" disabled>
+            <option value="bad">select areas</option>
+        </select>
+        <select id="sel_dist" disabled>
+            <option value="bad">select district</option>
+        </select>
+        <select id="sel_sec" disabled>
+            <option value="bad">select sectors</option>
+        </select>
+        <select id="sel_beat" disabled>
+            <option value="bad">select beats</option>
+        </select>
+        </form>
+        <button class="submit_polygon" onclick="drawPolygon()">submit</button>
+    </div>
+
+    <div class="polygon" id="map_input_sec">
+        <p class="input_info">Input in format (lat,long\n)</p>
+        <textarea class="input_points" id="input_points_val" rows="10" cols="27" placeholder="41.917781,-87.701545
+41.917781,-87701545"></textarea>
+        <button class="submit_cust_map" onclick="generatejsonObj()">submit</button>
+    </div>
+
+    <div class="map_id" id="map_id_sec" onclick="hideMapID()">
+    </div>
+    <div id="input_id_sec">
+    <p class="input_mapID" onclick="inputMapID()">
+        <i class="fa fa-file-text" aria-hidden="true"></i>
+        Input MapID
+    </p>
+    </div>
+        <form id="form">
+            <div class="side_bar" id="side">
+                <p class="side_bar_title"> More Filter </p>
+                <div class="side_bar_option">
+                    <p class="side_bar_text" id="pre_map"> Predefined Map </p>
+                    <div class="drop_panel" id="pre_map_panel" name="pre_map_type">
+                        <input type="radio" name="pre_type" value="0" id="p1">
+                            <label class="tab-label" for="p1">Past Week</label>
+                        </input>
+                        <input type="radio" name="pre_type" value="1" id="p2">
+                            <label class="tab-label" for="p2">Past Year</label>
+                        </input>
+                        <input type="radio" name="pre_type" value="2" id="p3">
+                            <label class="tab-label" for="p3">This Year</label>
+                        </input>
+                        <input type="radio" name="pre_type" value="3" id="p4">
+                            <label class="tab-label" for="p4">Past 2 Years</label>
+                        </input>
+                    </div>
+                </div>
+
+                <div class="side_bar_option">
+                    <p class="side_bar_text" id="crime_select"> Crime Type </p>
+                    <div class="drop_panel" id="crime_select_panel">
+                        <input type="radio" name="crime_type" value="crime" id="c1">
+                            <label class="tab-label" for="c1">Crime</label>
+                        </input>
+                        </br>
+                        <input type="radio" name="crime_type" value="arrest" id="c2">
+                            <label class="tab-label" for="c2">Arrest</label>
+                        </input>
+                    </div>
+                </div>
+                
+                <div class="side_bar_option">
+                    <p class="side_bar_text" id="map_select_id"> Map Type </p>
+                    <div class="drop_panel" id="map_select_panel">
+                        <input type="radio" name="map_type" value="location" id="h1">
+                            <label class="tab-label" for="h1">Location</label>
+                        </input>
+                        </br>
+                        <input type="radio" name="map_type" value="heatmap" id="h2">
+                            <label class="tab-label" for="h2">HeatMap</label>
+                        </input>
+                    </div>
+                </div>
+                <div class="side_bar_option">
+                    <p class="side_bar_text" id="pre_map"> More </p>
+                </div>
+            </div>
+
+            <input type="text" id="searchAny" name="searchbar" placeholder="Search.." class="search_bar"></input>
+
+            <p class="date">Date:
+                <input type="text" id="datepicker_start" name="date_start" class="date_option" placeholder="From"></input>
+                <input type="text" id="datepicker_end" name="date_end" class="date_option" placeholder="To" Style="margin-left:0.2vw"></input>
+            </p>
+            <p class="range">Past
+                <input type="text" class="days" name="days" placeholder="0"></input>
+                Days
+            </p>
+
+            <i class="fa fa-street-view fa-lg mapbyzoomlevel" aria-hidden="true" onclick="getCurrentCenterAndRadius()"></i>
+            <i class="fa fa-map fa-lg mapbyradius" aria-hidden="true" onclick="submitRadiusAndCenter()"></i>
+            <input type="text" placeholder="longitude" name="longitude" value="longitude" class="longitude"></input>
+            <input type="text" placeholder="latitude" name="latitude" value="latitude" class="latitude"></input>
+            <input type="text" placeholder="radius" name="radius" value="radius" class="radius"></input>
+        </form>
+        <button class="submit_btn" onclick="submitForm()">submit</button>
+       <!-- <button class="submit_btn" onclick="submitRadiusAndCenter()">submit</button> -->
+
+        <!-- adding markers -->
+        <!--
+  <div id="inputForm">
+  <input id="btn_addmarker" type="button" value="Crime markers" onclick="getAllCrime()" />
+  <input id="btn_addmarker2" type="button" value="Arrests markers" onclick="getAllArrests()"/>
+  </div>
+	-->
+        <!--start javascript-->
+        <script src="../js/mapscript.js"></script>
+    </div>
+
+</body>
+
+</html>
