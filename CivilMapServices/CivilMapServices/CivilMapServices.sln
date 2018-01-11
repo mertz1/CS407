@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CivilMapServices", "CivilMapServices\CivilMapServices.csproj", "{44382AA7-EFA4-4DE0-B980-1983816CB4A6}"
+EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "CivilMapCloudServices", "CivilMapCloudServices\CivilMapCloudServices.ccproj", "{DA3A5F43-94D6-4983-9DA8-BF731C8FA813}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{44382AA7-EFA4-4DE0-B980-1983816CB4A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44382AA7-EFA4-4DE0-B980-1983816CB4A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44382AA7-EFA4-4DE0-B980-1983816CB4A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44382AA7-EFA4-4DE0-B980-1983816CB4A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA3A5F43-94D6-4983-9DA8-BF731C8FA813}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA3A5F43-94D6-4983-9DA8-BF731C8FA813}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA3A5F43-94D6-4983-9DA8-BF731C8FA813}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA3A5F43-94D6-4983-9DA8-BF731C8FA813}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

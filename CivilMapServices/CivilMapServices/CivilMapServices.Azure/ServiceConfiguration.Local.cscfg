@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="CivilMapServices.Azure" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="*" schemaVersion="2015-04.2.6">
+  <Role name="CivilMapServices">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="civilmapdev" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBnQYJKoZIhvcNAQcDoIIBjjCCAYoCAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCEH+fDdZMovqEQ3OpYE3r/NowDQYJKoZIhvcNAQEBBQAEggEAU5RVY1U5+vNHK9Xr14DgGx8w8v9Slv4CyXw8ssKEFyYqb2TFylSLGl6xGG0t0SqOy55WMNhpAgwkHKZxG84kddLjG24d4klkqCWDUOyo7T8yEPLg2JaYSiKKP8F7NCDtd0TJtx9MmB6vHDp9L5/5KXGFnBIq/4JM+5To/TB81uqaJx/nZifodhk4Z/0EkchCgA9s834E5Xhez1frTCHf/NkGLdqjwLJL9GFY2PiTQRuzHxF17g8n2GLrtc6zJTWL7RGYYBfJitOr87M8ee2mlxPn3whYg6Dr3xSCbS7eq8zq7AQT4JghAh5xrACLt0e5c/UVgf8MvKCbDUTedrwZUTAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECNoF8z2SUkahgBCgJg6YMBl1l30PKJ00pbUl" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2018-10-31T23:59:59.0000000-04:00" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="true" />
+      <Setting name="APPINSIGHTS_INSTRUMENTATIONKEY" value="078f6b5f-050c-42b6-b973-7beb779e00e3" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="9BF3538012D315AC3444FFC9EA120278F71686C7" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
+</ServiceConfiguration>

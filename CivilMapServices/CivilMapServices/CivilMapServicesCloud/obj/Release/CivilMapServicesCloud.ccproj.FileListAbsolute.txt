@@ -1,0 +1,2 @@
+C:\Users\Jing\Documents\Visual Studio 2015\Projects\CivilMapServices\CivilMapServicesCloud\bin\Release\ServiceConfiguration.cscfg
+C:\Users\Jing\Documents\Visual Studio 2015\Projects\CivilMapServices\CivilMapServicesCloud\bin\Release\ServiceDefinition.csdef
